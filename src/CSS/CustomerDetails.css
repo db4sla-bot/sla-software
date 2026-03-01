@@ -148,6 +148,8 @@
   background: transparent;
   transition: all 0.15s ease;
   cursor: pointer;
+  border: none;
+  outline: none;
 }
 
 .cd-action-btn.edit:hover { background: rgba(108,92,231,0.08); color: var(--primary); }
@@ -218,7 +220,7 @@
 
 .cd-installment-row {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1fr 1.5fr auto;
+  grid-template-columns: 1.2fr 1fr 1.2fr 0.8fr 1.5fr auto;
   gap: 8px;
   padding: 10px 16px;
   border-top: 1px solid var(--border-color);
@@ -243,21 +245,6 @@
 .cd-installment-amount {
   font-weight: 700;
   color: var(--primary);
-}
-
-.cd-paid-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 10px;
-  border-radius: 20px;
-  font-size: 0.7rem;
-  font-weight: 600;
-}
-
-.cd-paid-badge.paid {
-  background: rgba(0,184,148,0.1);
-  color: #00b894;
 }
 
 .cd-payment-summary {
@@ -286,7 +273,7 @@
   color: var(--danger) !important;
 }
 
-/* === INVOICE SECTION === */
+/* === INVOICE ITEMS TABLE === */
 .cd-invoice-items-table {
   width: 100%;
   border-collapse: collapse;
@@ -294,9 +281,7 @@
   font-size: 0.84rem;
 }
 
-.cd-invoice-items-table thead {
-  background: var(--content-bg);
-}
+.cd-invoice-items-table thead { background: var(--content-bg); }
 
 .cd-invoice-items-table th {
   padding: 10px 12px;
@@ -320,9 +305,7 @@
   font-size: 0.82rem;
 }
 
-.cd-invoice-items-table tbody tr:last-child td {
-  border-bottom: none;
-}
+.cd-invoice-items-table tbody tr:last-child td { border-bottom: none; }
 
 .cd-add-item-btn {
   display: inline-flex;
@@ -336,11 +319,10 @@
   border-radius: var(--border-radius);
   transition: all 0.15s ease;
   background: transparent;
+  border: none;
 }
 
-.cd-add-item-btn:hover {
-  background: rgba(108, 92, 231, 0.06);
-}
+.cd-add-item-btn:hover { background: rgba(108, 92, 231, 0.06); }
 
 .cd-invoice-summary {
   display: flex;
@@ -349,17 +331,18 @@
 }
 
 .cd-invoice-summary-table {
-  width: 260px;
+  width: 280px;
 }
 
 .cd-invoice-summary-table tr td {
-  padding: 6px 0;
+  padding: 8px 0;
   font-size: 0.85rem;
 }
 
 .cd-invoice-summary-table tr td:first-child {
   color: var(--text-secondary);
   font-weight: 500;
+  padding-right: 16px;
 }
 
 .cd-invoice-summary-table tr td:last-child {
@@ -381,6 +364,7 @@
   margin: 0 auto;
   background: #fff;
   padding: 40px;
+  color: #2d3436;
 }
 
 .cd-inv-header {
@@ -388,19 +372,20 @@
   justify-content: space-between;
   margin-bottom: 30px;
   padding-bottom: 20px;
-  border-bottom: 2px solid var(--primary);
+  border-bottom: 3px solid #6c5ce7;
 }
 
 .cd-inv-brand h2 {
   font-size: 1.3rem;
   font-weight: 800;
-  color: var(--primary);
+  color: #6c5ce7;
   margin-bottom: 4px;
 }
 
 .cd-inv-brand p {
   font-size: 0.78rem;
-  color: var(--text-secondary);
+  color: #636e72;
+  line-height: 1.6;
 }
 
 .cd-inv-number {
@@ -410,13 +395,13 @@
 .cd-inv-number h3 {
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #2d3436;
   margin-bottom: 4px;
 }
 
 .cd-inv-number p {
   font-size: 0.8rem;
-  color: var(--text-secondary);
+  color: #636e72;
 }
 
 .cd-inv-parties {
@@ -431,19 +416,17 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: var(--text-muted);
+  color: #b2bec3;
   margin-bottom: 8px;
 }
 
 .cd-inv-party p {
   font-size: 0.88rem;
-  color: var(--text-primary);
+  color: #2d3436;
   line-height: 1.6;
 }
 
-.cd-inv-party p strong {
-  font-weight: 700;
-}
+.cd-inv-party p strong { font-weight: 700; }
 
 .cd-inv-table {
   width: 100%;
@@ -453,7 +436,7 @@
 
 .cd-inv-table th {
   padding: 10px 12px;
-  background: var(--primary);
+  background: #6c5ce7;
   color: #fff;
   font-size: 0.75rem;
   font-weight: 600;
@@ -464,20 +447,26 @@
 
 .cd-inv-table td {
   padding: 10px 12px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid #e9ecef;
   font-size: 0.85rem;
+  color: #2d3436;
 }
 
 .cd-inv-table tfoot td {
   font-weight: 700;
-  border-top: 2px solid var(--border-color);
+  border-top: 2px solid #e9ecef;
   border-bottom: none;
+  padding: 8px 12px;
+}
+
+.cd-inv-total-row td {
+  border-top: 2px solid #6c5ce7 !important;
 }
 
 .cd-inv-notes {
   margin-top: 24px;
   padding-top: 16px;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid #e9ecef;
 }
 
 .cd-inv-notes h4 {
@@ -485,13 +474,13 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: var(--text-muted);
+  color: #b2bec3;
   margin-bottom: 6px;
 }
 
 .cd-inv-notes p {
   font-size: 0.82rem;
-  color: var(--text-secondary);
+  color: #636e72;
   line-height: 1.6;
   white-space: pre-wrap;
 }
@@ -508,6 +497,7 @@
   background: transparent;
   cursor: pointer;
   transition: all 0.15s ease;
+  border: none;
 }
 
 .cd-remove-item:hover {
@@ -526,18 +516,78 @@
   color: var(--text-muted);
 }
 
-/* === PRINT === */
+/* ===== PRINT STYLES ===== */
+/* The print-only div is hidden on screen */
+.cd-print-only {
+  display: none;
+}
+
+/* The main page content hides on print */
+@page {
+  margin: 0;
+  size: A4;
+}
+
 @media print {
-  body * { visibility: hidden; }
-  .cd-invoice-preview, .cd-invoice-preview * { visibility: visible; }
-  .cd-invoice-preview {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    padding: 20px;
+  /* Hide everything by default */
+  body > * {
+    display: none !important;
   }
-  .no-print { display: none !important; }
+
+  /* But the React root needs to be visible so our print div shows */
+  #root {
+    display: block !important;
+  }
+
+  /* Hide the no-print page content */
+  .cd-no-print {
+    display: none !important;
+  }
+
+  /* Show the print-only content */
+  .cd-print-only {
+    display: block !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 99999;
+    background: #fff;
+  }
+
+  .cd-invoice-preview {
+    padding: 20px 30px;
+    max-width: 100%;
+  }
+
+  .cd-inv-header {
+    border-bottom: 3px solid #6c5ce7 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .cd-inv-table th {
+    background: #6c5ce7 !important;
+    color: #fff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .cd-inv-total-row td {
+    border-top: 2px solid #6c5ce7 !important;
+  }
+
+  /* Hide sidebar, header etc */
+  .sidebar, .admin-sidebar, .header, .admin-header, nav {
+    display: none !important;
+  }
+
+  /* Make the layout full width */
+  .admin-content, .main-content, main {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
 }
 
 /* === RESPONSIVE === */
@@ -556,4 +606,10 @@
   }
 
   .cd-installment-row.header { display: none; }
+
+  .cd-payment-summary {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
 }
