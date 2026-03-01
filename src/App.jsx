@@ -3,6 +3,7 @@ import AdminLayout from './layouts/AdminLayout';
 import Dashboard from './pages/Dashboard';
 import Leads from './pages/Leads';
 import Customers from './pages/Customers';
+import CustomerDetails from './pages/CustomerDetails';
 import Materials from './pages/Materials';
 import MosquitoMeshDoors from './pages/MosquitoMeshDoors';
 import Expenses from './pages/Expenses';
@@ -21,6 +22,7 @@ export default function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/leads" element={<Leads />} />
           <Route path="/customers" element={<Customers />} />
+          <Route path="/customer/:customerId" element={<CustomerDetails />} />
           <Route path="/materials" element={<Materials />} />
           <Route path="/mosquito-mesh-doors" element={<MosquitoMeshDoors />} />
           <Route path="/expenses" element={<Expenses />} />
