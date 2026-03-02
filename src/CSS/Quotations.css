@@ -1,0 +1,381 @@
+/* ===== QUOTATIONS PAGE ===== */
+
+/* === STATS === */
+.quotations-stats-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.quotations-stat-card {
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  padding: 18px 20px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: all 0.2s ease;
+}
+
+.quotations-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.quotations-stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.quotations-stat-info h4 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.quotations-stat-info p {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* === DATE BAR === */
+.quotations-date-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 14px 18px;
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+  flex-wrap: wrap;
+}
+
+.quotations-date-chips {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.quo-date-chip {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--content-bg);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.quo-date-chip:hover {
+  border-color: var(--primary-light);
+  color: var(--primary);
+}
+
+.quo-date-chip.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  box-shadow: 0 2px 8px rgba(108, 92, 231, 0.25);
+}
+
+/* === TABLE === */
+.quotations-table-card {
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.quotations-table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.quotations-table-header h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.quotations-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.quotations-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--content-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 7px 14px;
+  font-size: 0.8rem;
+  transition: all 0.15s ease;
+}
+
+.quotations-search:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
+}
+
+.quotations-search input {
+  background: transparent;
+  color: var(--text-primary);
+  width: 180px;
+}
+
+.quotations-search input::placeholder {
+  color: var(--text-muted);
+}
+
+.quotations-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.quotations-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+  min-width: 700px;
+}
+
+.quotations-table thead {
+  background: var(--content-bg);
+}
+
+.quotations-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.quotations-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.quotations-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.quotations-table tbody tr:hover {
+  background: rgba(108, 92, 231, 0.02);
+}
+
+.quotations-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* === EMPTY === */
+.quotations-empty-row td {
+  padding: 60px 16px;
+  text-align: center;
+}
+
+.quotations-empty-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.quotations-empty-content svg {
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.quotations-empty-content h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.quotations-empty-content p {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+/* === ACTIONS === */
+.quotation-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.quotation-action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  background: transparent;
+  transition: all 0.15s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.quotation-action-btn.view-btn:hover { background: rgba(45,134,222,0.08); color: #2e86de; }
+.quotation-action-btn.print-btn:hover { background: rgba(0,184,148,0.08); color: #00b894; }
+.quotation-action-btn.edit-btn:hover { background: rgba(108,92,231,0.08); color: var(--primary); }
+.quotation-action-btn.delete-btn:hover { background: rgba(225,112,85,0.08); color: var(--danger); }
+
+/* === PAGINATION === */
+.quotations-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-top: 1px solid var(--border-color);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.quotations-pagination-info {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.quotations-pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.qpag-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.qpag-btn:hover:not(:disabled) {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: rgba(108, 92, 231, 0.04);
+}
+
+.qpag-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.qpag-btn.page-num { min-width: 34px; width: auto; padding: 0 4px; }
+
+.qpag-btn.page-num.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  box-shadow: 0 2px 8px rgba(108, 92, 231, 0.25);
+}
+
+.qpag-dots {
+  padding: 0 6px;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+/* === PRINT === */
+.quo-print-only { display: none; }
+
+@page { margin: 0; size: A4; }
+
+@media print {
+  body > * { display: none !important; }
+  #root { display: block !important; }
+  .quo-no-print { display: none !important; }
+  .quo-print-only {
+    display: block !important;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    z-index: 99999;
+    background: #fff;
+  }
+  .sidebar, .admin-sidebar, .header, .admin-header, nav { display: none !important; }
+  .admin-content, .main-content, main { margin: 0 !important; padding: 0 !important; width: 100% !important; }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .quotations-pagination {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .quotations-date-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .quotations-stats-bar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .quotations-table-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .quotations-header-right { width: 100%; }
+  .quotations-search { width: 100%; }
+  .quotations-search input { width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .quotations-stats-bar { gap: 10px; }
+  .quotations-stat-card { padding: 12px 14px; gap: 10px; }
+  .quotations-stat-icon { width: 36px; height: 36px; }
+  .quotations-stat-info h4 { font-size: 1.1rem; }
+  .quotations-stat-info p { font-size: 0.68rem; }
+  .quotations-table-header { padding: 12px 14px; }
+  .quotations-table th, .quotations-table td { padding: 10px 12px; font-size: 0.78rem; }
+  .quotation-action-btn { width: 28px; height: 28px; }
+  .qpag-btn { width: 30px; height: 30px; font-size: 0.75rem; }
+  .quotations-date-bar { padding: 10px 14px; gap: 8px; }
+  .quo-date-chip { padding: 5px 10px; font-size: 0.72rem; }
+}
