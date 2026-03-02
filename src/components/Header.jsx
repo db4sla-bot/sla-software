@@ -1,7 +1,20 @@
 import { Search, Bell, Sun, Maximize2, Menu } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 import './Header.css';
 
 export default function Header({ onMenuToggle }) {
+  const { currentUser, staffData, isAdmin } = useAuth();
+
+  const displayName = isAdmin
+    ? (staffData?.name || 'SLA Admin')
+    : (staffData?.name || currentUser?.email || 'Staff');
+
+  const displayRole = isAdmin
+    ? 'Administrator'
+    : (staffData?.role || 'Staff');
+
+  const initials = displayName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+
   return (
     <header className="header">
       {/* Left Section */}
@@ -39,10 +52,10 @@ export default function Header({ onMenuToggle }) {
 
         {/* User Profile */}
         <div className="header-user">
-          <div className="header-user-avatar">SL</div>
+          <div className="header-user-avatar">{initials}</div>
           <div className="header-user-info">
-            <span className="header-user-name">SLA Admin</span>
-            <span className="header-user-role">Administrator</span>
+            <span className="header-user-name">{displayName}</span>
+            <span className="header-user-role">{displayRole}</span>
           </div>
         </div>
       </div>

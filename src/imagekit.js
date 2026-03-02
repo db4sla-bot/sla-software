@@ -1,9 +1,9 @@
 // ImageKit configuration
 // Replace these values with your actual ImageKit credentials
 export const IMAGEKIT_CONFIG = {
-  publicKey: "public_q7WB+V1+wYmiat45JoY4Se3HiPs=",
-  privateKey: "private_Kc02oUVXzWsCTKc8musvnSvBKsg=",
-  urlEndpoint: "https://ik.imagekit.io/u58ih6wp1",
+  publicKey: "public_9KSZKbpY+szT2aPLrMP04TGGcw4=",
+  privateKey: "private_vwIqJMWnFP0h5ZPgPKx5gXFmRdw=",
+  urlEndpoint: "https://ik.imagekit.io/67x2srjsy",
   // The authentication endpoint should be a server-side endpoint
   // For client-side uploads, we'll use the upload API directly
 };

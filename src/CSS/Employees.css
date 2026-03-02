@@ -1,0 +1,529 @@
+/* ===== EMPLOYEES PAGE ===== */
+
+/* === Stats === */
+.emp-stats-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.emp-stat-card {
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  padding: 18px 20px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: all 0.2s ease;
+}
+
+.emp-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.emp-stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.emp-stat-info h4 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.emp-stat-info p {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* === Table Card === */
+.emp-table-card {
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.emp-table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.emp-table-header h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.emp-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--content-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 7px 14px;
+  font-size: 0.8rem;
+  transition: all 0.15s ease;
+}
+
+.emp-search:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
+}
+
+.emp-search input {
+  background: transparent;
+  color: var(--text-primary);
+  width: 200px;
+}
+
+.emp-search input::placeholder {
+  color: var(--text-muted);
+}
+
+.emp-table-wrap {
+  overflow-x: auto;
+}
+
+.emp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+}
+
+.emp-table thead {
+  background: var(--content-bg);
+}
+
+.emp-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.emp-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.emp-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.emp-table tbody tr:hover {
+  background: rgba(108, 92, 231, 0.02);
+}
+
+.emp-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* === Employee ID Badge === */
+.emp-id-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: rgba(108, 92, 231, 0.08);
+  color: var(--primary);
+  font-family: monospace;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+}
+
+/* === Name Cell === */
+.emp-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.emp-name-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.78rem;
+  color: #fff;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.emp-name-text {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* === Role Badge === */
+.emp-role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  background: rgba(108, 92, 231, 0.1);
+  color: var(--primary);
+}
+
+.emp-role-badge.admin {
+  background: rgba(225, 112, 85, 0.12);
+  color: var(--danger);
+}
+
+.emp-role-badge.manager {
+  background: rgba(0, 184, 148, 0.12);
+  color: #00b894;
+}
+
+.emp-role-badge.technician {
+  background: rgba(9, 132, 227, 0.12);
+  color: #0984e3;
+}
+
+.emp-role-badge.sales-executive {
+  background: rgba(253, 203, 110, 0.15);
+  color: #e67e22;
+}
+
+.emp-role-badge.accountant {
+  background: rgba(0, 206, 201, 0.12);
+  color: #00cec9;
+}
+
+/* === Actions === */
+.emp-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.emp-action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  background: transparent;
+  transition: all 0.15s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.emp-action-btn.edit-btn:hover {
+  background: rgba(108, 92, 231, 0.08);
+  color: var(--primary);
+}
+
+.emp-action-btn.delete-btn:hover {
+  background: rgba(225, 112, 85, 0.08);
+  color: var(--danger);
+}
+
+.emp-action-btn.view-btn:hover {
+  background: rgba(0, 184, 148, 0.08);
+  color: var(--success);
+}
+
+/* === Empty === */
+.emp-empty-row td {
+  padding: 60px 16px;
+  text-align: center;
+}
+
+.emp-empty-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.emp-empty-content svg {
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.emp-empty-content h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.emp-empty-content p {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+/* === Password Field === */
+.emp-password-field {
+  position: relative;
+}
+
+.emp-password-field .form-input {
+  padding-right: 42px;
+}
+
+.emp-password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.emp-password-toggle:hover {
+  color: var(--primary);
+  background: rgba(108, 92, 231, 0.06);
+}
+
+.emp-password-toggle-sm {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+}
+
+.emp-password-toggle-sm:hover {
+  color: var(--primary);
+}
+
+/* === Access Control Grid === */
+.emp-access-actions {
+  float: right;
+  display: inline-flex;
+  gap: 8px;
+}
+
+.emp-access-actions button {
+  background: transparent;
+  border: none;
+  color: var(--primary);
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: opacity 0.15s ease;
+}
+
+.emp-access-actions button:hover {
+  opacity: 0.7;
+}
+
+.emp-access-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.emp-access-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--content-bg);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  user-select: none;
+}
+
+.emp-access-item:hover {
+  border-color: var(--primary-light);
+  background: rgba(108, 92, 231, 0.03);
+}
+
+.emp-access-item.selected {
+  border-color: var(--primary);
+  background: rgba(108, 92, 231, 0.06);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.emp-access-item input[type="checkbox"] {
+  display: none;
+}
+
+.emp-access-checkbox {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 2px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.emp-access-item.selected .emp-access-checkbox {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+/* === View Details === */
+.emp-view-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.emp-view-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.emp-view-header h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.emp-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.emp-detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.emp-detail-item.full-width {
+  grid-column: 1 / -1;
+}
+
+.emp-detail-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+}
+
+.emp-detail-value {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+/* === Access Tags === */
+.emp-access-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.emp-access-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: rgba(108, 92, 231, 0.08);
+  color: var(--primary);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .emp-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .emp-access-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .emp-table-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .emp-search {
+    width: 100%;
+  }
+
+  .emp-search input {
+    width: 100%;
+  }
+
+  .emp-access-grid {
+    grid-template-columns: 1fr;
+  }
+}

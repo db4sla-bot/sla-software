@@ -14,7 +14,9 @@ import {
   KeyRound,
   Settings,
   Shield,
+  LogOut,
 } from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
 import "./Sidebar.css";
 
 const mainNavItems = [
@@ -47,6 +49,15 @@ const toolsNavItems = [
 
 export default function Sidebar({ isOpen, onClose }) {
   const location = useLocation();
+  const { hasAccess, currentUser, logout, isAdmin, staffData } = useAuth();
+
+  const filterItems = (items) => {
+    return items.filter(item => {
+      // Dashboard is admin-only, all other items check access
+      if (item.path === '/') return isAdmin;
+      return hasAccess(item.path);
+    });
+  };
 
   const renderNavItem = (item) => {
     const Icon = item.icon;
@@ -66,6 +77,19 @@ export default function Sidebar({ isOpen, onClose }) {
     );
   };
 
+  const filteredMain = filterItems(mainNavItems);
+  const filteredFinance = filterItems(financeNavItems);
+  const filteredManagement = filterItems(managementNavItems);
+  const filteredTools = filterItems(toolsNavItems);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (err) {
+      console.error('Logout error:', err);
+    }
+  };
+
   return (
     <>
       <div
@@ -80,43 +104,55 @@ export default function Sidebar({ isOpen, onClose }) {
           </div>
           <div className="sidebar-brand-info">
             <span className="sidebar-brand-name">SLA Invisible Grills</span>
-            <span className="sidebar-brand-label">Admin Panel</span>
+            <span className="sidebar-brand-label">
+              {isAdmin ? 'Admin Panel' : (staffData?.role || 'Staff Panel')}
+            </span>
           </div>
         </div>
 
         {/* Navigation */}
         <nav className="sidebar-nav">
-          <div className="nav-section">
-            <div className="nav-section-title">Main</div>
-            {mainNavItems.map(renderNavItem)}
-          </div>
+          {filteredMain.length > 0 && (
+            <div className="nav-section">
+              <div className="nav-section-title">Main</div>
+              {filteredMain.map(renderNavItem)}
+            </div>
+          )}
 
-          <div className="nav-section">
-            <div className="nav-section-title">Finance</div>
-            {financeNavItems.map(renderNavItem)}
-          </div>
+          {filteredFinance.length > 0 && (
+            <div className="nav-section">
+              <div className="nav-section-title">Finance</div>
+              {filteredFinance.map(renderNavItem)}
+            </div>
+          )}
 
-          <div className="nav-section">
-            <div className="nav-section-title">Management</div>
-            {managementNavItems.map(renderNavItem)}
-          </div>
+          {filteredManagement.length > 0 && (
+            <div className="nav-section">
+              <div className="nav-section-title">Management</div>
+              {filteredManagement.map(renderNavItem)}
+            </div>
+          )}
 
-          <div className="nav-section">
-            <div className="nav-section-title">Tools</div>
-            {toolsNavItems.map(renderNavItem)}
-          </div>
+          {filteredTools.length > 0 && (
+            <div className="nav-section">
+              <div className="nav-section-title">Tools</div>
+              {filteredTools.map(renderNavItem)}
+            </div>
+          )}
         </nav>
 
         {/* Footer */}
         <div className="sidebar-footer">
-          <NavLink
-            to="/settings"
-            className={`nav-item ${location.pathname === "/settings" ? "active" : ""}`}
-            onClick={onClose}
-          >
-            <Settings className="nav-item-icon" />
-            <span className="nav-item-text">Settings</span>
-          </NavLink>
+          {currentUser && (
+            <button
+              className="nav-item"
+              onClick={handleLogout}
+              style={{ width: '100%', textAlign: 'left', cursor: 'pointer' }}
+            >
+              <LogOut className="nav-item-icon" />
+              <span className="nav-item-text">Logout</span>
+            </button>
+          )}
         </div>
       </aside>
     </>
