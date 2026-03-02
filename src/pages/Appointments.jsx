@@ -74,6 +74,7 @@ export default function Appointments() {
   const [currentPage, setCurrentPage] = useState(1);
   const [dateFilter, setDateFilter] = useState('today');
   const [customDate, setCustomDate] = useState(getTodayStr());
+  const [statusFilter, setStatusFilter] = useState('all');
 
   // Modal
   const [showModal, setShowModal] = useState(false);
@@ -266,6 +267,11 @@ export default function Appointments() {
       });
     }
 
+    // Status filter
+    if (statusFilter !== 'all') {
+      result = result.filter(a => (a.status || 'Pending') === statusFilter);
+    }
+
     // Search filter
     if (searchTerm) {
       const t = searchTerm.toLowerCase();
@@ -280,7 +286,7 @@ export default function Appointments() {
     }
 
     return result;
-  }, [appointments, searchTerm, activeTab, dateFilter, customDate]);
+  }, [appointments, searchTerm, activeTab, dateFilter, customDate, statusFilter]);
 
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
   const paginatedData = useMemo(() => {
@@ -436,6 +442,19 @@ export default function Appointments() {
                 />
               </div>
             )}
+            <div className="appt-date-filter">
+              <Filter size={15} color="var(--text-muted)" />
+              <select
+                className="appt-filter-select"
+                value={statusFilter}
+                onChange={e => setStatusFilter(e.target.value)}
+              >
+                <option value="all">All Status</option>
+                {STATUS_OPTIONS.map(opt => (
+                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
+              </select>
+            </div>
             <div className="appt-search">
               <Search size={15} color="var(--text-muted)" />
               <input
