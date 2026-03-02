@@ -14,6 +14,7 @@ import Invoices from './pages/Invoices';
 import Quotations from './pages/Quotations';
 import Appointments from './pages/Appointments';
 import Employees from './pages/Employees';
+import EmployeeDetails from './pages/EmployeeDetails';
 import QRCodes from './pages/QRCodes';
 import Passwords from './pages/Passwords';
 
@@ -68,6 +69,7 @@ function AppRoutes() {
         <Route path="/quotations" element={<ProtectedRoute path="/quotations"><Quotations /></ProtectedRoute>} />
         <Route path="/appointments" element={<ProtectedRoute path="/appointments"><Appointments /></ProtectedRoute>} />
         <Route path="/employees" element={<ProtectedRoute path="/employees"><Employees /></ProtectedRoute>} />
+        <Route path="/employee/:employeeId" element={<ProtectedRoute path="/employees"><EmployeeDetails /></ProtectedRoute>} />
         <Route path="/qr-codes" element={<ProtectedRoute path="/qr-codes"><QRCodes /></ProtectedRoute>} />
         <Route path="/passwords" element={<ProtectedRoute path="/passwords"><Passwords /></ProtectedRoute>} />
       </Route>

@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   BadgeCheck, Plus, Search, X, Save, Check,
   Pencil, Trash2, AlertTriangle, Eye, EyeOff,
@@ -68,6 +69,7 @@ function generateEmployeeId() {
 }
 
 export default function Employees() {
+  const navigate = useNavigate();
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -406,7 +408,7 @@ export default function Employees() {
                     </td>
                     <td>
                       <div className="emp-actions">
-                        <button className="emp-action-btn view-btn" title="View" onClick={() => { setViewItem(item); setViewShowPassword(false); }}>
+                        <button className="emp-action-btn view-btn" title="View" onClick={() => navigate(`/employee/${item.id}`)}>
                           <Eye size={15} />
                         </button>
                         <button className="emp-action-btn edit-btn" title="Edit" onClick={() => openEditModal(item)}>
