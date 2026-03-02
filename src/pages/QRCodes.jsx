@@ -9,7 +9,7 @@ import {
   collection, addDoc, deleteDoc, doc,
   getDocs, serverTimestamp, query, orderBy
 } from 'firebase/firestore';
-import '../css/QRCodes.css';
+import '../CSS/QRCodes.css';
 
 /* ---- Tiny component that renders a QR code onto a canvas ---- */
 function QRCanvas({ value, size = 180 }) {

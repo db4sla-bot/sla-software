@@ -10,7 +10,7 @@ import {
   doc, getDoc, updateDoc, collection, addDoc, deleteDoc,
   getDocs, query, orderBy, serverTimestamp
 } from 'firebase/firestore';
-import '../css/CustomerDetails.css';
+import '../CSS/CustomerDetails.css';
 
 const SERVICES = ['Invisible Grills', 'Mosquito Mesh', 'Cloth Hangers'];
 const PAYMENT_MODES = ['Cash', 'UPI', 'Bank Transfer', 'Cheque', 'Card', 'Other'];

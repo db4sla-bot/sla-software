@@ -10,7 +10,7 @@ import {
   collection, addDoc, updateDoc, deleteDoc, doc,
   getDocs, serverTimestamp, query, orderBy
 } from 'firebase/firestore';
-import '../css/Appointments.css';
+import '../CSS/Appointments.css';
 
 const ITEMS_PER_PAGE = 32;
 

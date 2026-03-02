@@ -8,7 +8,7 @@ import {
   collection, addDoc, updateDoc, deleteDoc, doc,
   getDocs, serverTimestamp, query, orderBy
 } from 'firebase/firestore';
-import '../css/Passwords.css';
+import '../CSS/Passwords.css';
 
 const INITIAL_FORM = { displayLabel: '', username: '', password: '' };
 

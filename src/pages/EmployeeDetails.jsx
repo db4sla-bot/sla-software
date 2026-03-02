@@ -12,7 +12,7 @@ import {
   getDocs, query, orderBy, serverTimestamp
 } from 'firebase/firestore';
 import { IMAGEKIT_CONFIG } from '../imagekit.js';
-import '../css/EmployeeDetails.css';
+import '../CSS/EmployeeDetails.css';
 
 const PAYMENT_MODES = ['Cash', 'UPI', 'Bank Transfer', 'Cheque', 'Card', 'Other'];
 

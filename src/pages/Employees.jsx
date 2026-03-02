@@ -11,7 +11,7 @@ import {
   getDocs, serverTimestamp, query, orderBy
 } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import '../css/Employees.css';
+import '../CSS/Employees.css';
 
 const ROLE_OPTIONS = ['Admin', 'Manager', 'Staff', 'Technician', 'Sales Executive', 'Accountant'];
 

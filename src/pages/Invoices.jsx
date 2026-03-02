@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import { db } from '../firebase.js';
 import { collection, getDocs, query, orderBy } from 'firebase/firestore';
-import '../css/Invoices.css';
+import '../CSS/Invoices.css';
 
 const ITEMS_PER_PAGE = 32;
 

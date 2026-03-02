@@ -11,7 +11,7 @@ import {
   collection, addDoc, updateDoc, deleteDoc, doc,
   getDocs, serverTimestamp, query, orderBy
 } from 'firebase/firestore';
-import '../css/Customers.css';
+import '../CSS/Customers.css';
 
 const ITEMS_PER_PAGE = 32;
 

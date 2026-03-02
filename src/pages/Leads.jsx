@@ -10,7 +10,7 @@ import {
   collection, addDoc, updateDoc, deleteDoc, doc,
   getDocs, serverTimestamp, query, orderBy
 } from 'firebase/firestore';
-import '../css/Leads.css';
+import '../CSS/Leads.css';
 
 /* ===== CONSTANTS ===== */
 const SERVICES = ['Invisible Grills', 'Mosquito Mesh', 'Cloth Hangers'];

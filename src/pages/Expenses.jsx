@@ -9,7 +9,7 @@ import {
   collection, addDoc, updateDoc, deleteDoc, doc,
   getDocs, serverTimestamp, query, orderBy
 } from 'firebase/firestore';
-import '../css/Expenses.css';
+import '../CSS/Expenses.css';
 
 const ITEMS_PER_PAGE = 32;
 

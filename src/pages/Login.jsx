@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Shield, LogIn, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import '../css/Login.css';
+import '../CSS/Login.css';
 
 export default function Login() {
   const { login } = useAuth();
