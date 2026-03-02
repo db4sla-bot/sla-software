@@ -86,10 +86,16 @@
 }
 
 /* === MINI TABLE (works, payments, invoices) === */
+.cd-mini-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 .cd-mini-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.84rem;
+  min-width: 500px;
 }
 
 .cd-mini-table thead { background: var(--content-bg); }
@@ -274,11 +280,17 @@
 }
 
 /* === INVOICE ITEMS TABLE === */
+.cd-invoice-items-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 .cd-invoice-items-table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 16px;
   font-size: 0.84rem;
+  min-width: 500px;
 }
 
 .cd-invoice-items-table thead { background: var(--content-bg); }
@@ -432,6 +444,7 @@
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 24px;
+  min-width: 550px;
 }
 
 .cd-inv-table th {
@@ -611,5 +624,121 @@
     flex-direction: column;
     align-items: flex-end;
     gap: 6px;
+  }
+
+  .cd-payment-header {
+    padding: 12px 14px;
+  }
+
+  .cd-section-header {
+    padding: 12px 16px;
+  }
+
+  .cd-section-body {
+    padding: 16px;
+  }
+
+  .cd-mini-table {
+    min-width: 480px;
+  }
+
+  .cd-invoice-items-table {
+    min-width: 480px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cd-section {
+    margin-bottom: 16px;
+    border-radius: 10px;
+  }
+
+  .cd-section-header {
+    padding: 10px 14px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .cd-section-header h3 {
+    font-size: 0.9rem;
+  }
+
+  .cd-section-body {
+    padding: 12px 14px;
+  }
+
+  .cd-profile-item {
+    gap: 10px;
+  }
+
+  .cd-profile-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+  }
+
+  .cd-profile-value {
+    font-size: 0.85rem;
+  }
+
+  .cd-installment-row {
+    grid-template-columns: 1fr;
+    padding: 10px 12px;
+    gap: 6px;
+  }
+
+  .cd-payment-summary {
+    padding: 10px 12px;
+    gap: 4px;
+    font-size: 0.78rem;
+  }
+
+  .cd-invoice-preview {
+    padding: 20px 16px;
+  }
+
+  .cd-inv-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .cd-inv-number {
+    text-align: left;
+  }
+
+  .cd-invoice-summary-table {
+    width: 100%;
+  }
+
+  .cd-invoice-items-table th,
+  .cd-invoice-items-table td {
+    padding: 8px 8px;
+    font-size: 0.78rem;
+  }
+
+  .cd-action-btn {
+    width: 28px;
+    height: 28px;
+  }
+
+  .cd-mini-table {
+    min-width: 400px;
+    font-size: 0.78rem;
+  }
+
+  .cd-mini-table th,
+  .cd-mini-table td {
+    padding: 8px 10px;
+  }
+
+  .cd-invoice-items-table {
+    min-width: 400px;
+  }
+
+  .cd-invoice-items-table th,
+  .cd-invoice-items-table td {
+    padding: 8px 8px;
+    font-size: 0.78rem;
   }
 }

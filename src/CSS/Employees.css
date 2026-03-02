@@ -103,12 +103,14 @@
 
 .emp-table-wrap {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .emp-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.84rem;
+  min-width: 750px;
 }
 
 .emp-table thead {
@@ -507,6 +509,16 @@
   .emp-access-grid {
     grid-template-columns: 1fr 1fr;
   }
+
+  .emp-view-header {
+    gap: 12px;
+  }
+
+  .emp-view-avatar {
+    width: 44px;
+    height: 44px;
+    font-size: 0.95rem;
+  }
 }
 
 @media (max-width: 640px) {
@@ -524,6 +536,61 @@
   }
 
   .emp-access-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .emp-stats-bar {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .emp-stat-card {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+
+  .emp-stat-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .emp-stat-info h4 {
+    font-size: 1.1rem;
+  }
+
+  .emp-stat-info p {
+    font-size: 0.68rem;
+  }
+
+  .emp-table-header {
+    padding: 12px 14px;
+  }
+
+  .emp-table th,
+  .emp-table td {
+    padding: 10px 12px;
+    font-size: 0.78rem;
+  }
+
+  .emp-table-header {
+    padding: 12px 14px;
+  }
+
+  .emp-action-btn {
+    width: 28px;
+    height: 28px;
+  }
+
+  .emp-name-avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 0.68rem;
+    border-radius: 6px;
+  }
+
+  .emp-detail-grid {
     grid-template-columns: 1fr;
   }
 }

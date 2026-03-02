@@ -231,12 +231,14 @@
 
 .appt-table-wrap {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .appt-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.84rem;
+  min-width: 800px;
 }
 
 .appt-table thead {
@@ -565,9 +567,19 @@
   .appt-detail-grid {
     grid-template-columns: 1fr;
   }
+
+  .appt-pagination {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
 }
 
 @media (max-width: 640px) {
+  .appt-stats-bar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .appt-table-header {
     flex-direction: column;
     align-items: flex-start;
@@ -603,8 +615,88 @@
     width: 100%;
   }
 
-  .appt-pagination {
-    flex-direction: column;
-    align-items: center;
+  .appt-name-avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 0.68rem;
+    border-radius: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .appt-stats-bar {
+    gap: 10px;
+  }
+
+  .appt-stat-card {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+
+  .appt-stat-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .appt-stat-info h4 {
+    font-size: 1.1rem;
+  }
+
+  .appt-stat-info p {
+    font-size: 0.68rem;
+  }
+
+  .appt-tabs {
+    gap: 2px;
+    padding: 3px;
+  }
+
+  .appt-tab {
+    padding: 7px 10px;
+    font-size: 0.72rem;
+    gap: 4px;
+  }
+
+  .appt-tab .appt-tab-count {
+    font-size: 0.62rem;
+    padding: 1px 6px;
+  }
+
+  .appt-table-header {
+    padding: 12px 14px;
+  }
+
+  .appt-table th,
+  .appt-table td {
+    padding: 10px 12px;
+    font-size: 0.78rem;
+  }
+
+  .appt-action-btn {
+    width: 28px;
+    height: 28px;
+  }
+
+  .appt-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .appt-filter-select {
+    font-size: 0.78rem;
+    padding: 7px 28px 7px 10px;
+  }
+
+  .appt-page-btn {
+    min-width: 30px;
+    height: 30px;
+    font-size: 0.75rem;
+  }
+
+  .appt-reason {
+    max-width: 120px;
+  }
+
+  .appt-result {
+    max-width: 100px;
   }
 }

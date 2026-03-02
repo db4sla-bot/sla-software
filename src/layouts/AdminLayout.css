@@ -151,7 +151,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .admin-content {
     padding: 16px;
   }
@@ -163,5 +163,46 @@
 
   .page-title {
     font-size: 1.25rem;
+  }
+
+  .page-header-actions {
+    width: 100%;
+  }
+
+  .empty-state {
+    padding: 48px 24px;
+  }
+
+  .empty-state-icon {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-content {
+    padding: 12px;
+  }
+
+  .page-title {
+    font-size: 1.1rem;
+  }
+
+  .page-header {
+    margin-bottom: 16px;
+    gap: 10px;
+  }
+
+  .empty-state {
+    padding: 36px 16px;
+  }
+
+  .empty-state h3 {
+    font-size: 1rem;
+  }
+
+  .btn {
+    padding: 8px 14px;
+    font-size: 0.8rem;
   }
 }

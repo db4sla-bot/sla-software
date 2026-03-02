@@ -104,12 +104,14 @@
 /* ===== TABLE ===== */
 .customers-table-wrap {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .customers-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.84rem;
+  min-width: 700px;
 }
 
 .customers-table thead {
@@ -403,6 +405,10 @@
     align-items: center;
     text-align: center;
   }
+
+  .customer-address {
+    max-width: 180px;
+  }
 }
 
 @media (max-width: 640px) {
@@ -425,5 +431,70 @@
 
   .view-modal {
     border-radius: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .customers-stats-bar {
+    gap: 10px;
+  }
+
+  .customers-stat-card {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+
+  .customers-stat-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .customers-stat-info h4 {
+    font-size: 1.1rem;
+  }
+
+  .customers-stat-info p {
+    font-size: 0.68rem;
+  }
+
+  .customers-stat-info p {
+    font-size: 0.68rem;
+  }
+
+  .customers-table-header {
+    padding: 12px 14px;
+  }
+
+  .customers-table th,
+  .customers-table td {
+    padding: 10px 12px;
+    font-size: 0.78rem;
+  }
+
+  .customer-address {
+    max-width: 120px;
+  }
+
+  .customer-action-btn {
+    width: 28px;
+    height: 28px;
+  }
+
+  .cpag-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 0.75rem;
+  }
+
+  .view-modal-header {
+    padding: 16px 18px;
+  }
+
+  .view-modal-body {
+    padding: 16px 18px;
+  }
+
+  .view-detail-row {
+    padding: 10px 0;
   }
 }

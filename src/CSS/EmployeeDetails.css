@@ -214,6 +214,7 @@
 /* === Profile Form === */
 .ed-profile-form {
   max-width: 700px;
+  width: 100%;
 }
 
 /* === Access Display === */
@@ -545,6 +546,19 @@
   .ed-docs-grid {
     grid-template-columns: 1fr 1fr;
   }
+
+  .ed-section-header {
+    padding: 12px 16px;
+  }
+
+  .ed-section-body {
+    padding: 16px;
+  }
+
+  .ed-advance-stats {
+    padding: 12px 16px;
+    gap: 12px;
+  }
 }
 
 @media (max-width: 640px) {
@@ -570,5 +584,127 @@
   .ed-advance-header {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .ed-header-card {
+    padding: 14px 16px;
+    gap: 12px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ed-header-left {
+    gap: 12px;
+  }
+
+  .ed-header-avatar {
+    width: 42px;
+    height: 42px;
+    font-size: 0.9rem;
+    border-radius: 12px;
+  }
+
+  .ed-header-left h2 {
+    font-size: 1rem;
+  }
+
+  .ed-header-meta {
+    gap: 8px;
+  }
+
+  .ed-emp-id {
+    font-size: 0.7rem;
+  }
+
+  .ed-tabs {
+    gap: 1px;
+    padding: 3px;
+  }
+
+  .ed-tab {
+    padding: 7px 10px;
+    font-size: 0.72rem;
+    gap: 4px;
+  }
+
+  .ed-section {
+    margin-bottom: 14px;
+    border-radius: 10px;
+  }
+
+  .ed-section-header {
+    padding: 10px 14px;
+    gap: 8px;
+  }
+
+  .ed-section-header h3 {
+    font-size: 0.9rem;
+  }
+
+  .ed-section-body {
+    padding: 12px 14px;
+  }
+
+  .ed-profile-item {
+    gap: 10px;
+  }
+
+  .ed-pi-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+  }
+
+  .ed-pi-value {
+    font-size: 0.82rem;
+  }
+
+  .ed-docs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ed-doc-pending-banner {
+    padding: 8px 14px;
+    font-size: 0.78rem;
+  }
+
+  .ed-advance-stats {
+    flex-direction: column;
+    padding: 12px 14px;
+    gap: 8px;
+  }
+
+  .ed-adv-stat strong {
+    font-size: 1rem;
+  }
+
+  .ed-advance-header {
+    padding: 10px 14px;
+  }
+
+  .ed-advance-header-left h4 {
+    font-size: 0.9rem;
+  }
+
+  .ed-back {
+    font-size: 0.78rem;
+    margin-bottom: 14px;
+  }
+
+  .ed-empty {
+    padding: 24px 16px;
+  }
+
+  .ed-doc-view-btn,
+  .ed-doc-change-btn,
+  .ed-doc-remove-btn {
+    padding: 5px 8px;
+    font-size: 0.68rem;
+  }
+
+  .ed-advance-card {
+    margin-bottom: 10px;
   }
 }

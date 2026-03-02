@@ -409,6 +409,7 @@ export default function CustomerDetails() {
           {inv.toPhone && <p>{inv.toPhone}</p>}
         </div>
       </div>
+      <div className="cd-mini-table-wrap">
       <table className="cd-inv-table">
         <thead><tr><th>Sl.No</th><th>Description</th><th>Width</th><th>Height</th><th>Sq.Ft</th><th>Rate</th><th>Subtotal</th></tr></thead>
         <tbody>
@@ -427,6 +428,7 @@ export default function CustomerDetails() {
           <tr className="cd-inv-total-row"><td colSpan="6" style={{ textAlign: 'right', fontWeight: 800, fontSize: '1rem' }}>Total</td><td style={{ fontWeight: 800, fontSize: '1rem', color: 'var(--primary)' }}>₹{(inv.total || 0).toLocaleString('en-IN')}</td></tr>
         </tfoot>
       </table>
+      </div>
       {inv.terms && <div className="cd-inv-notes"><h4>Terms & Conditions</h4><p>{inv.terms}</p></div>}
       {inv.notes && <div className="cd-inv-notes"><h4>Notes</h4><p>{inv.notes}</p></div>}
     </div>
@@ -507,6 +509,7 @@ export default function CustomerDetails() {
           {works.length === 0 ? (
             <div className="cd-empty"><Briefcase size={32} /><h4>No works yet</h4><p>Click "Add Work" to create one</p></div>
           ) : (
+            <div className="cd-mini-table-wrap">
             <table className="cd-mini-table">
               <thead><tr><th>#</th><th>Work Name</th><th>Service</th><th>Date</th><th>Actions</th></tr></thead>
               <tbody>
@@ -526,6 +529,7 @@ export default function CustomerDetails() {
                 ))}
               </tbody>
             </table>
+            </div>
           )}
         </div>
 
@@ -605,6 +609,7 @@ export default function CustomerDetails() {
           {invoices.length === 0 ? (
             <div className="cd-empty"><FileText size={32} /><h4>No invoices yet</h4><p>Click "Add Invoice" to create one</p></div>
           ) : (
+            <div className="cd-mini-table-wrap">
             <table className="cd-mini-table">
               <thead><tr><th>#</th><th>Invoice No</th><th>To</th><th>Total</th><th>Date</th><th>Actions</th></tr></thead>
               <tbody>
@@ -627,6 +632,7 @@ export default function CustomerDetails() {
                 ))}
               </tbody>
             </table>
+            </div>
           )}
         </div>
 

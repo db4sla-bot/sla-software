@@ -177,12 +177,14 @@
 
 .invoices-table-wrap {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .invoices-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.84rem;
+  min-width: 700px;
 }
 
 .invoices-table thead {
@@ -362,6 +364,7 @@
   .invoices-pagination {
     flex-direction: column;
     align-items: center;
+    text-align: center;
   }
   .invoices-date-bar {
     flex-direction: column;
@@ -380,4 +383,60 @@
   .invoices-header-right { width: 100%; }
   .invoices-search { width: 100%; }
   .invoices-search input { width: 100%; }
+  .invoices-filter-select { width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .invoices-stats-bar {
+    gap: 10px;
+  }
+
+  .invoices-stat-card {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+
+  .invoices-stat-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .invoices-stat-info h4 {
+    font-size: 1.1rem;
+  }
+
+  .invoices-stat-info p {
+    font-size: 0.68rem;
+  }
+
+  .invoices-table-header {
+    padding: 12px 14px;
+  }
+
+  .invoices-table th,
+  .invoices-table td {
+    padding: 10px 12px;
+    font-size: 0.78rem;
+  }
+
+  .invoice-action-btn {
+    width: 28px;
+    height: 28px;
+  }
+
+  .ipag-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 0.75rem;
+  }
+
+  .invoices-date-bar {
+    padding: 10px 14px;
+    gap: 8px;
+  }
+
+  .inv-date-chip {
+    padding: 5px 10px;
+    font-size: 0.72rem;
+  }
 }

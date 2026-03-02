@@ -76,7 +76,7 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 a {
@@ -132,7 +132,7 @@ img {
 
 /* ===== SHARED PAGE STYLES ===== */
 .page {
-  padding: 24px;
+  padding: 0;
 }
 
 .page-header {
@@ -533,22 +533,129 @@ img {
 }
 
 /* ===== SHARED RESPONSIVE ===== */
-@media (max-width: 640px) {
-  .page {
-    padding: 16px;
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 1.2rem;
   }
+
+  .page-header {
+    gap: 10px;
+  }
+
+  .page-header-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .modal-overlay {
+    padding: 10px;
+    align-items: flex-end;
+  }
+
+  .modal {
+    max-height: 92vh;
+    border-radius: 16px 16px 0 0;
+    animation: modalSlideUp 0.3s ease;
+  }
+
+  @keyframes modalSlideUp {
+    from { opacity: 0; transform: translateY(100%); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .modal-header { padding: 14px 16px; }
+  .modal-body { padding: 16px; }
+  .modal-footer { padding: 12px 16px; }
+  .delete-modal { padding: 24px; }
 
   .form-row {
     grid-template-columns: 1fr;
   }
 
+  .toast {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    border-radius: 10px;
+  }
+
+  .btn {
+    padding: 10px 16px;
+    font-size: 0.82rem;
+  }
+
+  .btn-save,
+  .btn-cancel,
+  .btn-delete {
+    padding: 10px 16px;
+    font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 1.1rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .page-header {
+    margin-bottom: 12px;
+  }
+
+  .page-header-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
   .modal {
     max-height: 95vh;
+  }
+
+  .modal-header h2 {
+    font-size: 0.95rem;
+  }
+
+  .form-label {
+    font-size: 0.75rem;
+  }
+
+  .form-input,
+  .form-select,
+  .form-textarea {
+    padding: 9px 12px;
+    font-size: 0.84rem;
+  }
+
+  .form-section-title {
+    font-size: 0.68rem;
+    margin-top: 16px;
+    margin-bottom: 10px;
+  }
+
+  .toast {
+    font-size: 0.78rem;
+    padding: 10px 14px;
+  }
+
+  .delete-modal {
+    padding: 20px;
     border-radius: 12px;
   }
 
-  .modal-header { padding: 16px 18px; }
-  .modal-body { padding: 18px; }
-  .modal-footer { padding: 14px 18px; }
-  .delete-modal { padding: 24px; }
+  .delete-modal h3 {
+    font-size: 1rem;
+  }
+
+  .delete-modal-actions {
+    flex-direction: column;
+  }
+
+  .delete-modal-actions .btn-cancel,
+  .delete-modal-actions .btn-delete {
+    width: 100%;
+    justify-content: center;
+  }
 }
