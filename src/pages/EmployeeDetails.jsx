@@ -60,30 +60,26 @@ function getAvatarColor(name) {
   return AVATAR_COLORS[Math.abs(h) % AVATAR_COLORS.length];
 }
 
-// Upload to ImageKit
+// Upload to ImageKit using Basic Auth with private key
 async function uploadToImageKit(file, folder) {
   const formData = new FormData();
   formData.append('file', file);
   formData.append('fileName', file.name);
   formData.append('folder', folder);
-  formData.append('publicKey', IMAGEKIT_CONFIG.publicKey);
 
-  // Create auth signature
-  const timestamp = Math.floor(Date.now() / 1000);
-  const token = crypto.randomUUID();
+  // Basic Auth: base64(privateKey:)
+  const authString = btoa(IMAGEKIT_CONFIG.privateKey + ':');
 
-  // Use private key to create signature
-  const encoder = new TextEncoder();
-  const key = await crypto.subtle.importKey('raw', encoder.encode(IMAGEKIT_CONFIG.privateKey), { name: 'HMAC', hash: 'SHA-1' }, false, ['sign']);
-  const signature = await crypto.subtle.sign('HMAC', key, encoder.encode(token + timestamp));
-  const sigHex = Array.from(new Uint8Array(signature)).map(b => b.toString(16).padStart(2, '0')).join('');
-
-  formData.append('signature', sigHex);
-  formData.append('expire', String(timestamp + 600));
-  formData.append('token', token);
-
-  const res = await fetch('https://upload.imagekit.io/api/v1/files/upload', { method: 'POST', body: formData });
-  if (!res.ok) throw new Error('Upload failed');
+  const res = await fetch('https://upload.imagekit.io/api/v1/files/upload', {
+    method: 'POST',
+    headers: { 'Authorization': `Basic ${authString}` },
+    body: formData,
+  });
+  if (!res.ok) {
+    const errData = await res.json().catch(() => ({}));
+    console.error('ImageKit error:', errData);
+    throw new Error(errData.message || 'Upload failed');
+  }
   return await res.json();
 }
 
@@ -109,7 +105,8 @@ export default function EmployeeDetails() {
 
   // Documents
   const [documents, setDocuments] = useState({});
-  const [uploading, setUploading] = useState({});
+  const [pendingFiles, setPendingFiles] = useState({}); // { key: File }
+  const [savingDocs, setSavingDocs] = useState(false);
 
   // Advances
   const [advances, setAdvances] = useState([]);
@@ -219,24 +216,22 @@ export default function EmployeeDetails() {
   };
 
   /* ========== DOCUMENTS ========== */
-  const handleDocUpload = async (docKey, file) => {
+  // Choose file locally (no upload yet)
+  const handleFileChoose = (docKey, file) => {
     if (!file) return;
-    try {
-      setUploading(prev => ({ ...prev, [docKey]: true }));
-      const folder = `/employees/${employee.name || 'unknown'}`;
-      const result = await uploadToImageKit(file, folder);
-      const updatedDocs = { ...documents, [docKey]: { url: result.url, name: result.name, fileId: result.fileId } };
-      setDocuments(updatedDocs);
-      await updateDoc(doc(db, 'staff', employeeId), { documents: updatedDocs, updatedAt: serverTimestamp() });
-      showToast(`${DOC_TYPES.find(d => d.key === docKey)?.label} uploaded!`);
-    } catch (err) {
-      console.error('Upload error:', err);
-      showToast('Upload failed', 'error');
-    } finally {
-      setUploading(prev => ({ ...prev, [docKey]: false }));
-    }
+    setPendingFiles(prev => ({ ...prev, [docKey]: file }));
   };
 
+  // Remove a pending (not yet uploaded) file
+  const removePendingFile = (docKey) => {
+    setPendingFiles(prev => {
+      const updated = { ...prev };
+      delete updated[docKey];
+      return updated;
+    });
+  };
+
+  // Remove an already uploaded document
   const removeDoc = async (docKey) => {
     const updatedDocs = { ...documents };
     delete updatedDocs[docKey];
@@ -244,6 +239,34 @@ export default function EmployeeDetails() {
     await updateDoc(doc(db, 'staff', employeeId), { documents: updatedDocs, updatedAt: serverTimestamp() });
     showToast('Document removed!');
   };
+
+  // Save all pending files: upload to ImageKit, then store URLs in Firestore
+  const saveDocuments = async () => {
+    const pendingKeys = Object.keys(pendingFiles);
+    if (pendingKeys.length === 0) { showToast('No new files to save', 'error'); return; }
+    try {
+      setSavingDocs(true);
+      const safeName = (employee.name || 'unknown').replace(/[^a-zA-Z0-9_-]/g, '_');
+      const folder = `employees/${safeName}`;
+      const updatedDocs = { ...documents };
+      for (const docKey of pendingKeys) {
+        const file = pendingFiles[docKey];
+        const result = await uploadToImageKit(file, folder);
+        updatedDocs[docKey] = { url: result.url, name: result.name, fileId: result.fileId };
+      }
+      await updateDoc(doc(db, 'staff', employeeId), { documents: updatedDocs, updatedAt: serverTimestamp() });
+      setDocuments(updatedDocs);
+      setPendingFiles({});
+      showToast('Documents saved successfully!');
+    } catch (err) {
+      console.error('Upload error:', err);
+      showToast('Upload failed', 'error');
+    } finally {
+      setSavingDocs(false);
+    }
+  };
+
+  const hasPendingFiles = Object.keys(pendingFiles).length > 0;
 
   /* ========== ADVANCES ========== */
   const openAdvanceModal = () => {
@@ -543,38 +566,61 @@ export default function EmployeeDetails() {
         <div className="ed-section">
           <div className="ed-section-header">
             <h3><FileImage size={18} /> Documents</h3>
+            {hasPendingFiles && (
+              <button className="btn-save" onClick={saveDocuments} disabled={savingDocs}>
+                {savingDocs ? <><div className="spinner" /> Uploading &amp; Saving...</> : <><Save size={14} /> Save Documents</>}
+              </button>
+            )}
           </div>
+          {hasPendingFiles && (
+            <div className="ed-doc-pending-banner">
+              <Upload size={15} /> {Object.keys(pendingFiles).length} file(s) selected — click <strong>Save Documents</strong> to upload
+            </div>
+          )}
           <div className="ed-section-body">
             <div className="ed-docs-grid">
               {DOC_TYPES.map(dtype => {
                 const docData = documents[dtype.key];
+                const pending = pendingFiles[dtype.key];
+                const previewUrl = pending ? URL.createObjectURL(pending) : null;
                 const DIcon = dtype.icon;
                 return (
-                  <div key={dtype.key} className="ed-doc-card">
+                  <div key={dtype.key} className={`ed-doc-card ${pending ? 'ed-doc-pending' : ''}`}>
                     <div className="ed-doc-header">
                       <span className="ed-doc-title"><DIcon size={16} /> {dtype.label}{dtype.required && <span className="required"> *</span>}</span>
+                      {pending && <span className="ed-doc-new-badge">New</span>}
                     </div>
                     <div className="ed-doc-body">
-                      {docData?.url ? (
+                      {pending ? (
+                        /* Show local preview for a pending file */
+                        <div className="ed-doc-preview">
+                          <img src={previewUrl} alt={dtype.label} />
+                          <div className="ed-doc-overlay">
+                            <label className="ed-doc-change-btn">
+                              <Pencil size={14} /> Change
+                              <input type="file" accept="image/*" hidden onChange={e => handleFileChoose(dtype.key, e.target.files[0])} />
+                            </label>
+                            <button className="ed-doc-remove-btn" onClick={() => removePendingFile(dtype.key)}><Trash2 size={14} /></button>
+                          </div>
+                        </div>
+                      ) : docData?.url ? (
+                        /* Show already uploaded image */
                         <div className="ed-doc-preview">
                           <img src={docData.url} alt={dtype.label} />
                           <div className="ed-doc-overlay">
                             <a href={docData.url} target="_blank" rel="noopener noreferrer" className="ed-doc-view-btn"><Eye size={16} /></a>
                             <label className="ed-doc-change-btn">
                               <Pencil size={14} /> Change
-                              <input type="file" accept="image/*" hidden onChange={e => handleDocUpload(dtype.key, e.target.files[0])} />
+                              <input type="file" accept="image/*" hidden onChange={e => handleFileChoose(dtype.key, e.target.files[0])} />
                             </label>
                             <button className="ed-doc-remove-btn" onClick={() => removeDoc(dtype.key)}><Trash2 size={14} /></button>
                           </div>
                         </div>
                       ) : (
+                        /* Empty state: choose file */
                         <label className="ed-doc-upload">
-                          {uploading[dtype.key] ? (
-                            <><div className="spinner" style={{ borderColor: 'var(--border-color)', borderTopColor: 'var(--primary)', width: 24, height: 24 }} /><span>Uploading...</span></>
-                          ) : (
-                            <><Upload size={24} /><span>Click to upload</span></>
-                          )}
-                          <input type="file" accept="image/*" hidden onChange={e => handleDocUpload(dtype.key, e.target.files[0])} disabled={uploading[dtype.key]} />
+                          <Upload size={24} /><span>Choose file</span>
+                          <input type="file" accept="image/*" hidden onChange={e => handleFileChoose(dtype.key, e.target.files[0])} />
                         </label>
                       )}
                     </div>

@@ -363,6 +363,41 @@
   font-weight: 600;
 }
 
+/* === Document Pending States === */
+.ed-doc-pending-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: rgba(108, 92, 231, 0.06);
+  border-bottom: 1px solid rgba(108, 92, 231, 0.15);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--primary);
+}
+
+.ed-doc-card.ed-doc-pending {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.12);
+}
+
+.ed-doc-new-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--primary);
+  color: #fff;
+}
+
+.ed-doc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 /* === Advance Stats === */
 .ed-advance-stats {
   display: flex;
