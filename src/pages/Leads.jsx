@@ -3,7 +3,7 @@ import {
   Users, Plus, Download, Search, X, Save, Check,
   CalendarClock, Pencil, Trash2, Filter,
   TrendingUp, UserCheck, UserX, AlertTriangle,
-  ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Calendar
+  ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Calendar, UserPlus
 } from 'lucide-react';
 import { db } from '../firebase.js';
 import {
@@ -128,6 +128,11 @@ export default function Leads() {
   const [showFilters, setShowFilters] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [deleting, setDeleting] = useState(false);
+  
+  // Convert confirm
+  const [convertConfirm, setConvertConfirm] = useState(null);
+  const [converting, setConverting] = useState(false);
+
   const [currentPage, setCurrentPage] = useState(1);
 
   // Date filter state
@@ -234,6 +239,7 @@ export default function Leads() {
         showToast('Lead updated successfully!');
       } else {
         ld.createdAt = serverTimestamp();
+        ld.isConverted = false; // By default not converted
         await addDoc(collection(db, 'leads'), ld);
         showToast('Lead added successfully!');
       }
@@ -255,6 +261,34 @@ export default function Leads() {
       console.error('Error deleting lead:', err);
       showToast('Failed to delete lead.', 'error');
     } finally { setDeleting(false); }
+  };
+
+  /* ---- Convert ---- */
+  const handleConvert = async (lead) => {
+    try {
+      setConverting(true);
+      const customerData = {
+        customerName: lead.customerName,
+        mobileNumber: lead.phoneNumber,
+        address: lead.address || '',
+        createdAt: serverTimestamp(),
+      };
+      await addDoc(collection(db, 'customers'), customerData);
+
+      await updateDoc(doc(db, 'leads', lead.id), {
+        isConverted: true,
+        updatedAt: serverTimestamp()
+      });
+
+      showToast('Lead successfully converted to Customer!');
+      setConvertConfirm(null);
+      fetchLeads();
+    } catch (err) {
+      console.error('Error converting lead:', err);
+      showToast('Failed to convert lead. Please try again.', 'error');
+    } finally {
+      setConverting(false);
+    }
   };
 
   /* ---- Filter Handlers ---- */
@@ -514,8 +548,19 @@ export default function Leads() {
                       ) : '—'}
                     </td>
                     <td>
-                      <div className="lead-actions">
-                        <button className="lead-action-btn edit-btn" title="Edit" onClick={() => openEditModal(lead)}><Pencil size={15} /></button>
+                      <div className="lead-actions" style={{ gap: '8px' }}>
+                        {lead.isConverted ? (
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(0,184,148,0.1)', color: '#00b894', padding: '4px 8px', borderRadius: '20px', fontSize: '0.7rem', fontWeight: 'bold' }}>
+                            <Check size={12} /> Converted
+                          </div>
+                        ) : (
+                          <>
+                            <button className="btn btn-outline" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '4px 10px', fontSize: '0.7rem', height: '30px' }} title="Convert to Customer" onClick={() => setConvertConfirm(lead)}>
+                              <UserPlus size={14} /> Convert
+                            </button>
+                            <button className="lead-action-btn edit-btn" title="Edit" onClick={() => openEditModal(lead)}><Pencil size={15} /></button>
+                          </>
+                        )}
                         <button className="lead-action-btn delete-btn" title="Delete" onClick={() => setDeleteConfirm(lead)}><Trash2 size={15} /></button>
                       </div>
                     </td>
@@ -683,6 +728,23 @@ export default function Leads() {
               <button className="btn-cancel" onClick={closeModal}>Cancel</button>
               <button className="btn-save" onClick={handleSave} disabled={saving}>
                 {saving ? (<><div className="spinner" /> Saving...</>) : (<><Save size={16} /> {editingLead ? 'Update Lead' : 'Save Lead'}</>)}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ============ CONVERT CONFIRMATION ============ */}
+      {convertConfirm && (
+        <div className="modal-overlay" onClick={() => setConvertConfirm(null)}>
+          <div className="delete-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="delete-modal-icon" style={{ background: 'rgba(9, 132, 227, 0.1)', color: '#0984e3' }}><UserPlus size={32} /></div>
+            <h3>Convert to Customer</h3>
+            <p>Are you sure you want to convert <strong>{convertConfirm.customerName}</strong> into a verified Customer?</p>
+            <div className="delete-modal-actions">
+              <button className="btn-cancel" onClick={() => setConvertConfirm(null)}>Cancel</button>
+              <button className="btn-save" onClick={() => handleConvert(convertConfirm)} disabled={converting}>
+                {converting ? (<><div className="spinner" /> Converting...</>) : (<><UserPlus size={16} /> Convert</>)}
               </button>
             </div>
           </div>
