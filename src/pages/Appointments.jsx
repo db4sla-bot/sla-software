@@ -3,7 +3,7 @@ import {
   CalendarCheck, Plus, Search, X, Save, Check,
   Pencil, Trash2, AlertTriangle, Eye, Clock,
   Users, Briefcase, Building2, ChevronLeft, ChevronRight,
-  Phone, MapPin, MessageSquare
+  Phone, MapPin, MessageSquare, Calendar, Filter
 } from 'lucide-react';
 import { db } from '../firebase.js';
 import {
@@ -13,6 +13,26 @@ import {
 import '../css/Appointments.css';
 
 const ITEMS_PER_PAGE = 32;
+
+const STATUS_OPTIONS = [
+  { value: 'Pending', label: 'Pending' },
+  { value: 'In Progress', label: 'In Progress' },
+  { value: 'Done', label: 'Done' },
+];
+
+const DATE_FILTER_OPTIONS = [
+  { value: 'today', label: 'Today' },
+  { value: 'yesterday', label: 'Yesterday' },
+  { value: 'this_week', label: 'This Week' },
+  { value: 'this_month', label: 'This Month' },
+  { value: 'all', label: 'All Time' },
+  { value: 'custom', label: 'Custom Date' },
+];
+
+function getTodayStr() {
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
 
 const TABS = [
   { key: 'customer', label: 'Customer Appointments', icon: Users, color: '#6c5ce7' },
@@ -27,9 +47,9 @@ const COLLECTIONS = {
 };
 
 const INITIAL_FORMS = {
-  customer: { customerName: '', phoneNumber: '', address: '', date: '', time: '', reason: '', resultComments: '' },
-  business: { businessPartnerName: '', phoneNumber: '', address: '', date: '', time: '', reason: '', resultComments: '' },
-  internal: { meetingWithName: '', mobileNumber: '', date: '', time: '', reason: '', resultComments: '' },
+  customer: { customerName: '', phoneNumber: '', address: '', date: '', time: '', reason: '', resultComments: '', status: 'Pending' },
+  business: { businessPartnerName: '', phoneNumber: '', address: '', date: '', time: '', reason: '', resultComments: '', status: 'Pending' },
+  internal: { meetingWithName: '', mobileNumber: '', date: '', time: '', reason: '', resultComments: '', status: 'Pending' },
 };
 
 const AVATAR_COLORS = ['#6c5ce7', '#00b894', '#e17055', '#0984e3', '#fdcb6e', '#00cec9', '#a29bfe', '#fd79a8'];
@@ -52,6 +72,8 @@ export default function Appointments() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [dateFilter, setDateFilter] = useState('today');
+  const [customDate, setCustomDate] = useState(getTodayStr());
 
   // Modal
   const [showModal, setShowModal] = useState(false);
@@ -75,6 +97,9 @@ export default function Appointments() {
     setCurrentPage(1);
     setSearchTerm('');
   }, [activeTab]);
+
+  // Reset page when date filter changes
+  useEffect(() => { setCurrentPage(1); }, [dateFilter, customDate]);
 
   const fetchAppointments = async () => {
     try {
@@ -131,7 +156,11 @@ export default function Appointments() {
     setEditingItem(item);
     const initial = { ...INITIAL_FORMS[activeTab] };
     Object.keys(initial).forEach(key => {
-      initial[key] = item[key] || '';
+      if (key === 'status') {
+        initial[key] = item[key] || 'Pending';
+      } else {
+        initial[key] = item[key] || '';
+      }
     });
     setForm(initial);
     setShowModal(true);
@@ -161,7 +190,6 @@ export default function Appointments() {
         showToast('Appointment updated!');
       } else {
         data.createdAt = serverTimestamp();
-        data.status = 'pending';
         await addDoc(collection(db, colName), data);
         showToast('Appointment added!');
       }
@@ -191,19 +219,68 @@ export default function Appointments() {
     }
   };
 
+  /* ---- Date filter helper ---- */
+  const getDateRange = () => {
+    const now = new Date();
+    const todayStr = getTodayStr();
+
+    switch (dateFilter) {
+      case 'today':
+        return { start: todayStr, end: todayStr };
+      case 'yesterday': {
+        const y = new Date(now);
+        y.setDate(y.getDate() - 1);
+        const yStr = y.getFullYear() + '-' + String(y.getMonth() + 1).padStart(2, '0') + '-' + String(y.getDate()).padStart(2, '0');
+        return { start: yStr, end: yStr };
+      }
+      case 'this_week': {
+        const day = now.getDay();
+        const diff = now.getDate() - day + (day === 0 ? -6 : 1);
+        const monday = new Date(now);
+        monday.setDate(diff);
+        const mStr = monday.getFullYear() + '-' + String(monday.getMonth() + 1).padStart(2, '0') + '-' + String(monday.getDate()).padStart(2, '0');
+        return { start: mStr, end: todayStr };
+      }
+      case 'this_month': {
+        const mStart = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-01';
+        return { start: mStart, end: todayStr };
+      }
+      case 'custom':
+        return { start: customDate, end: customDate };
+      case 'all':
+      default:
+        return null;
+    }
+  };
+
   /* ---- Filter & Pagination ---- */
   const filtered = useMemo(() => {
-    if (!searchTerm) return appointments;
-    const t = searchTerm.toLowerCase();
-    const nameField = getNameField();
-    const phoneField = getPhoneField();
-    return appointments.filter(a =>
-      a[nameField]?.toLowerCase().includes(t) ||
-      a[phoneField]?.toLowerCase().includes(t) ||
-      a.reason?.toLowerCase().includes(t) ||
-      a.address?.toLowerCase().includes(t)
-    );
-  }, [appointments, searchTerm, activeTab]);
+    let result = appointments;
+
+    // Date filter
+    const range = getDateRange();
+    if (range) {
+      result = result.filter(a => {
+        if (!a.date) return false;
+        return a.date >= range.start && a.date <= range.end;
+      });
+    }
+
+    // Search filter
+    if (searchTerm) {
+      const t = searchTerm.toLowerCase();
+      const nameField = getNameField();
+      const phoneField = getPhoneField();
+      result = result.filter(a =>
+        a[nameField]?.toLowerCase().includes(t) ||
+        a[phoneField]?.toLowerCase().includes(t) ||
+        a.reason?.toLowerCase().includes(t) ||
+        a.address?.toLowerCase().includes(t)
+      );
+    }
+
+    return result;
+  }, [appointments, searchTerm, activeTab, dateFilter, customDate]);
 
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
   const paginatedData = useMemo(() => {
@@ -336,14 +413,38 @@ export default function Appointments() {
       <div className="appt-table-card">
         <div className="appt-table-header">
           <h3>{currentTabConfig.label} ({filtered.length})</h3>
-          <div className="appt-search">
-            <Search size={15} color="var(--text-muted)" />
-            <input
-              type="text"
-              placeholder="Search appointments..."
-              value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
-            />
+          <div className="appt-table-filters">
+            <div className="appt-date-filter">
+              <Calendar size={15} color="var(--text-muted)" />
+              <select
+                className="appt-filter-select"
+                value={dateFilter}
+                onChange={e => setDateFilter(e.target.value)}
+              >
+                {DATE_FILTER_OPTIONS.map(opt => (
+                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
+              </select>
+            </div>
+            {dateFilter === 'custom' && (
+              <div className="appt-custom-date">
+                <input
+                  type="date"
+                  className="appt-filter-date-input"
+                  value={customDate}
+                  onChange={e => setCustomDate(e.target.value)}
+                />
+              </div>
+            )}
+            <div className="appt-search">
+              <Search size={15} color="var(--text-muted)" />
+              <input
+                type="text"
+                placeholder="Search appointments..."
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+              />
+            </div>
           </div>
         </div>
 
@@ -423,8 +524,8 @@ export default function Appointments() {
                         <span className="appt-result" title={item.resultComments}>{item.resultComments || '—'}</span>
                       </td>
                       <td>
-                        <span className={`appt-status ${item.status || 'pending'}`}>
-                          {item.status || 'pending'}
+                        <span className={`appt-status ${(item.status || 'Pending').toLowerCase().replace(/\s+/g, '-')}`}>
+                          {item.status || 'Pending'}
                         </span>
                       </td>
                       <td>
@@ -568,6 +669,22 @@ export default function Appointments() {
                 </div>
               </div>
 
+              {/* Status */}
+              <div className="form-row single">
+                <div className="form-group">
+                  <label className="form-label">Status <span className="required">*</span></label>
+                  <select
+                    className="form-select"
+                    value={form.status}
+                    onChange={e => handleChange('status', e.target.value)}
+                  >
+                    {STATUS_OPTIONS.map(opt => (
+                      <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
               <div className="form-section-title">Purpose</div>
 
               {/* Reason */}
@@ -651,7 +768,7 @@ export default function Appointments() {
                 </div>
                 <div className="appt-detail-item">
                   <span className="appt-detail-label">Status</span>
-                  <span className={`appt-status ${viewItem.status || 'pending'}`}>{viewItem.status || 'pending'}</span>
+                  <span className={`appt-status ${(viewItem.status || 'Pending').toLowerCase().replace(/\s+/g, '-')}`}>{viewItem.status || 'Pending'}</span>
                 </div>
                 <div className="appt-detail-item">
                   <span className="appt-detail-label">Created</span>
