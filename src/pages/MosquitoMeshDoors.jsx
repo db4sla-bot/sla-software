@@ -162,7 +162,21 @@ export default function MosquitoMeshDoors() {
     const newOrderId = generateOrderId();
     setCurrentOrder({
       orderId: newOrderId,
-      doorEntries: []
+      doorEntries: [
+        {
+          doorType: 'SLA Nellore 1',
+          productName: '',
+          quality: '',
+          series: '',
+          doors: '',
+          thickness: '',
+          frameColor: '',
+          meshColor: '',
+          width: '',
+          height: '',
+          notes: ''
+        }
+      ]
     });
     setModalMode('add');
     setShowModal(true);
@@ -170,12 +184,13 @@ export default function MosquitoMeshDoors() {
 
   // Add new door entry
   const handleAddDoorEntry = () => {
+    const nextDoorNum = currentOrder.doorEntries.length + 1;
     setCurrentOrder({
       ...currentOrder,
       doorEntries: [
         ...currentOrder.doorEntries,
         {
-          doorType: '',
+          doorType: `SLA Nellore ${nextDoorNum}`,
           productName: '',
           quality: '',
           series: '',
@@ -299,6 +314,22 @@ export default function MosquitoMeshDoors() {
   // Print order as PDF
   const handlePrintOrder = (order) => {
     const element = document.createElement('div');
+    
+    // Define the labels and their corresponding keys in the door entry
+    const labels = [
+      { label: 'SLA Nellore', key: 'doorType' },
+      { label: 'Product Name', key: 'productName' },
+      { label: 'Quality', key: 'quality' },
+      { label: 'Series', key: 'series' },
+      { label: 'Doors', key: 'doors' },
+      { label: 'Thickness', key: 'thickness' },
+      { label: 'Frame Color', key: 'frameColor' },
+      { label: 'Mesh Color', key: 'meshColor' },
+      { label: 'Width (mm)', key: 'width' },
+      { label: 'Height (mm)', key: 'height' },
+      { label: 'Notes', key: 'notes' }
+    ];
+
     element.innerHTML = `
       <div style="padding: 30px; font-family: Arial, sans-serif;">
         <h1 style="text-align: center; margin-bottom: 10px;">Order ${order.orderId}</h1>
@@ -306,36 +337,14 @@ export default function MosquitoMeshDoors() {
           ${new Date(order.createdAt?.toDate?.()).toLocaleDateString()}
         </p>
         
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-          <thead>
-            <tr style="background-color: #f3f4f6; border-bottom: 2px solid #333;">
-              <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Door Type</th>
-              <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Product Name</th>
-              <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Quality</th>
-              <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Series</th>
-              <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Doors</th>
-              <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Thickness</th>
-              <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Frame Color</th>
-              <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Mesh Color</th>
-              <th style="border: 1px solid #ddd; padding: 12px; text-align: center;">Width (mm)</th>
-              <th style="border: 1px solid #ddd; padding: 12px; text-align: center;">Height (mm)</th>
-              <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Notes</th>
-            </tr>
-          </thead>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; table-layout: fixed;">
           <tbody>
-            ${order.doorEntries?.map(entry => `
+            ${labels.map(l => `
               <tr style="border-bottom: 1px solid #ddd;">
-                <td style="border: 1px solid #ddd; padding: 12px;">${entry.doorType || '-'}</td>
-                <td style="border: 1px solid #ddd; padding: 12px;">${entry.productName || '-'}</td>
-                <td style="border: 1px solid #ddd; padding: 12px;">${entry.quality || '-'}</td>
-                <td style="border: 1px solid #ddd; padding: 12px;">${entry.series || '-'}</td>
-                <td style="border: 1px solid #ddd; padding: 12px;">${entry.doors || '-'}</td>
-                <td style="border: 1px solid #ddd; padding: 12px;">${entry.thickness || '-'}</td>
-                <td style="border: 1px solid #ddd; padding: 12px;">${entry.frameColor || '-'}</td>
-                <td style="border: 1px solid #ddd; padding: 12px;">${entry.meshColor || '-'}</td>
-                <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">${entry.width || '-'}</td>
-                <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">${entry.height || '-'}</td>
-                <td style="border: 1px solid #ddd; padding: 12px;">${entry.notes || '-'}</td>
+                <th style="background-color: #f3f4f6; border: 1px solid #ddd; padding: 12px; text-align: left; width: 140px;">${l.label}</th>
+                ${order.doorEntries?.map(entry => `
+                  <td style="border: 1px solid #ddd; padding: 12px; text-align: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${entry[l.key] || '-'}</td>
+                `).join('')}
               </tr>
             `).join('')}
           </tbody>
@@ -456,23 +465,23 @@ export default function MosquitoMeshDoors() {
         <>
           {/* Tab Navigation */}
           <div className="tabs-container">
-        <div className="tabs-nav">
-          <button 
-            className={`tab-btn ${activeTab === 'orders' ? 'active' : ''}`}
-            onClick={() => setActiveTab('orders')}
-          >
-            Orders
-          </button>
-          <button 
-            className={`tab-btn ${activeTab === 'definitions' ? 'active' : ''}`}
-            onClick={() => setActiveTab('definitions')}
-          >
-            Definitions
-          </button>
-        </div>
+            <div className="tabs-nav">
+              <button 
+                className={`tab-btn ${activeTab === 'orders' ? 'active' : ''}`}
+                onClick={() => setActiveTab('orders')}
+              >
+                Orders
+              </button>
+              <button 
+                className={`tab-btn ${activeTab === 'definitions' ? 'active' : ''}`}
+                onClick={() => setActiveTab('definitions')}
+              >
+                Definitions
+              </button>
+            </div>
 
-        {/* Tab Content */}
-        <div className="tabs-content">
+            {/* Tab Content */}
+            <div className="tabs-content">
           {/* Orders Tab */}
           {activeTab === 'orders' && (
             <div className="tab-pane active">
@@ -533,7 +542,7 @@ export default function MosquitoMeshDoors() {
                           ) : (
                             order.doorEntries?.map((entry, idx) => (
                               <div key={idx} className="entry-item">
-                                <strong>{entry.doorType || 'No Door Type'}</strong>
+                                <strong>{entry.doorType || 'No SLA Nellore'}</strong>
                                 <p>{entry.productName && entry.quality ? `${entry.productName} - ${entry.quality}` : '-'}</p>
                                 {(entry.width || entry.height) && (
                                   <p>{entry.width}mm × {entry.height}mm</p>
@@ -644,6 +653,7 @@ export default function MosquitoMeshDoors() {
                 <div className="table-left">
                   {/* Left side - Static menu rows */}
                   <div className="table-row-labels">
+                    <div className="row-label">SLA Nellore</div>
                     <div className="row-label">Product Name</div>
                     <div className="row-label">Quality</div>
                     <div className="row-label">Series</div>
@@ -663,7 +673,16 @@ export default function MosquitoMeshDoors() {
                     {currentOrder.doorEntries.map((entry, entryIndex) => (
                       <div key={entryIndex} className="column-wrapper">
                         <div className="column-header">
-                          <div className="column-num">Door {entryIndex + 1}</div>
+                          <div className="column-num">
+                            <input
+                              type="text"
+                              value={entry.doorType || `SLA Nellore ${entryIndex + 1}`}
+                              onChange={(e) => handleDoorEntryChange(entryIndex, 'doorType', e.target.value)}
+                              disabled={modalMode === 'view'}
+                              className="door-name-input"
+                              placeholder="SLA Nellore"
+                            />
+                          </div>
                           {modalMode !== 'view' && (
                             <button
                               className="column-remove"
@@ -676,6 +695,10 @@ export default function MosquitoMeshDoors() {
                         </div>
 
                         <div className="column-fields">
+                          {/* Door Type / Name */}
+                          {/* (Already in header, but keeping field alignment) */}
+                          <div className="table-cell-spacer"></div>
+
                           {/* Product Name */}
                           <select
                             value={entry.productName}

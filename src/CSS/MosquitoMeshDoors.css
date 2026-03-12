@@ -270,7 +270,7 @@
   display: flex;
   flex-direction: column;
   gap: 0;
-  padding-top: 50px;
+  padding-top: 0;
 }
 
 .row-label {
@@ -280,12 +280,20 @@
   font-weight: 600;
   color: var(--text-primary);
   background: var(--card-bg);
-  min-height: 42px;
-  height: 42px;
+  min-height: 43px;
+  height: 43px;
   display: flex;
   align-items: center;
   word-break: break-word;
   flex-shrink: 0;
+}
+
+.row-label:first-child {
+  height: 56px;
+  min-height: 56px;
+  background: var(--content-bg);
+  color: var(--primary);
+  border-bottom: 2px solid var(--border-color);
 }
 
 .row-label:last-child {
@@ -325,16 +333,41 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 0;
   padding-bottom: 10px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 2px solid var(--border-color);
   flex-shrink: 0;
+  height: 44px;
+}
+
+.door-name-input {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--primary);
+  background: transparent;
+  border: 1px solid transparent;
+  width: 120px;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.door-name-input:focus {
+  outline: none;
+  background: var(--card-bg);
+  border-color: var(--primary);
+}
+
+.door-name-input:disabled {
+  border: none;
+  padding-left: 0;
 }
 
 .column-num {
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--primary);
+  display: flex;
+  align-items: center;
 }
 
 .column-remove {
@@ -358,6 +391,12 @@
   display: flex;
   flex-direction: column;
   gap: 0;
+  padding-top: 0;
+}
+
+.table-cell-spacer {
+  height: 0;
+  display: none;
 }
 
 .table-cell-input {
