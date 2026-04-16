@@ -3,36 +3,39 @@ import { DoorOpen, Plus, Download, X, Loader, Trash2, Eye, Edit, Printer } from 
 import { db } from '../firebase';
 import { doc, getDoc, setDoc, collection, getDocs, query, orderBy, deleteDoc } from 'firebase/firestore';
 import html2pdf from 'html2pdf.js';
+import { useAuth } from '../contexts/AuthContext';
 import '../CSS/MosquitoMeshDoors.css';
 
 // Definition section component (outside main component to prevent recreation)
-function DefinitionSection({ title, sectionKey, items, newValue, onInputChange, onAddItem, onDeleteItem }) {
+function DefinitionSection({ title, sectionKey, items, newValue, onInputChange, onAddItem, onDeleteItem, canEdit }) {
   return (
     <div className="definition-section">
       <div className="section-header">
         <h3>{title}</h3>
       </div>
       
-      <div className="section-add">
-        <input
-          type="text"
-          placeholder={`Enter ${title.toLowerCase()}`}
-          value={newValue}
-          onChange={(e) => onInputChange(sectionKey, e.target.value)}
-          onKeyPress={(e) => {
-            if (e.key === 'Enter') {
-              onAddItem(sectionKey);
-            }
-          }}
-          className="input"
-        />
-        <button 
-          className="btn btn-primary btn-sm"
-          onClick={() => onAddItem(sectionKey)}
-        >
-          <Plus size={16} /> Add
-        </button>
-      </div>
+      {canEdit && (
+        <div className="section-add">
+          <input
+            type="text"
+            placeholder={`Enter ${title.toLowerCase()}`}
+            value={newValue}
+            onChange={(e) => onInputChange(sectionKey, e.target.value)}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                onAddItem(sectionKey);
+              }
+            }}
+            className="input"
+          />
+          <button 
+            className="btn btn-primary btn-sm"
+            onClick={() => onAddItem(sectionKey)}
+          >
+            <Plus size={16} /> Add
+          </button>
+        </div>
+      )}
 
       <div className="section-list">
         {items.length === 0 ? (
@@ -42,13 +45,15 @@ function DefinitionSection({ title, sectionKey, items, newValue, onInputChange, 
             {items.map((item, index) => (
               <li key={`${sectionKey}-${index}`} className="list-item">
                 <span>{item}</span>
-                <button 
-                  className="btn-delete"
-                  onClick={() => onDeleteItem(sectionKey, index)}
-                  title="Delete"
-                >
-                  <X size={16} />
-                </button>
+                {canEdit && (
+                  <button 
+                    className="btn-delete"
+                    onClick={() => onDeleteItem(sectionKey, index)}
+                    title="Delete"
+                  >
+                    <X size={16} />
+                  </button>
+                )}
               </li>
             ))}
           </ul>
@@ -59,6 +64,10 @@ function DefinitionSection({ title, sectionKey, items, newValue, onInputChange, 
 }
 
 export default function MosquitoMeshDoors() {
+  const { getPermission } = useAuth();
+  const permission = getPermission('/mosquito-mesh-doors');
+  const canEdit = permission === 'edit';
+
   const [activeTab, setActiveTab] = useState('orders');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -442,7 +451,7 @@ export default function MosquitoMeshDoors() {
           <button className="btn btn-outline" disabled={saving}>
             <Download size={16} /> Export
           </button>
-          {activeTab === 'orders' && (
+          {activeTab === 'orders' && canEdit && (
             <button className="btn btn-primary" disabled={saving} onClick={handleAddOrderClick}>
               <Plus size={16} /> Add Order
             </button>
@@ -513,13 +522,15 @@ export default function MosquitoMeshDoors() {
                             >
                               <Eye size={18} />
                             </button>
-                            <button
-                              className="order-action-btn"
-                              onClick={() => handleEditOrder(order)}
-                              title="Edit"
-                            >
-                              <Edit size={18} />
-                            </button>
+                            {canEdit && (
+                              <button
+                                className="order-action-btn"
+                                onClick={() => handleEditOrder(order)}
+                                title="Edit"
+                              >
+                                <Edit size={18} />
+                              </button>
+                            )}
                             <button
                               className="order-action-btn"
                               onClick={() => handlePrintOrder(order)}
@@ -527,13 +538,15 @@ export default function MosquitoMeshDoors() {
                             >
                               <Printer size={18} />
                             </button>
-                            <button
-                              className="order-action-btn delete"
-                              onClick={() => handleDeleteOrder(order.id)}
-                              title="Delete"
-                            >
-                              <Trash2 size={18} />
-                            </button>
+                            {canEdit && (
+                              <button
+                                className="order-action-btn delete"
+                                onClick={() => handleDeleteOrder(order.id)}
+                                title="Delete"
+                              >
+                                <Trash2 size={18} />
+                              </button>
+                            )}
                           </div>
                         </div>
                         <div className="order-entries">
@@ -571,6 +584,7 @@ export default function MosquitoMeshDoors() {
                   onInputChange={handleInputChange}
                   onAddItem={handleAddItem}
                   onDeleteItem={handleDeleteItem}
+                  canEdit={canEdit}
                 />
                 <DefinitionSection 
                   title="Quality" 
@@ -580,6 +594,7 @@ export default function MosquitoMeshDoors() {
                   onInputChange={handleInputChange}
                   onAddItem={handleAddItem}
                   onDeleteItem={handleDeleteItem}
+                  canEdit={canEdit}
                 />
                 <DefinitionSection 
                   title="Series" 
@@ -589,6 +604,7 @@ export default function MosquitoMeshDoors() {
                   onInputChange={handleInputChange}
                   onAddItem={handleAddItem}
                   onDeleteItem={handleDeleteItem}
+                  canEdit={canEdit}
                 />
                 <DefinitionSection 
                   title="Doors" 
@@ -598,6 +614,7 @@ export default function MosquitoMeshDoors() {
                   onInputChange={handleInputChange}
                   onAddItem={handleAddItem}
                   onDeleteItem={handleDeleteItem}
+                  canEdit={canEdit}
                 />
                 <DefinitionSection 
                   title="Thickness" 
@@ -607,6 +624,7 @@ export default function MosquitoMeshDoors() {
                   onInputChange={handleInputChange}
                   onAddItem={handleAddItem}
                   onDeleteItem={handleDeleteItem}
+                  canEdit={canEdit}
                 />
                 <DefinitionSection 
                   title="Frame Color" 
@@ -616,6 +634,7 @@ export default function MosquitoMeshDoors() {
                   onInputChange={handleInputChange}
                   onAddItem={handleAddItem}
                   onDeleteItem={handleDeleteItem}
+                  canEdit={canEdit}
                 />
                 <DefinitionSection 
                   title="Mesh Color" 
@@ -625,6 +644,7 @@ export default function MosquitoMeshDoors() {
                   onInputChange={handleInputChange}
                   onAddItem={handleAddItem}
                   onDeleteItem={handleDeleteItem}
+                  canEdit={canEdit}
                 />
               </div>
             </div>

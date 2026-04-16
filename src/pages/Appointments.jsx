@@ -6,6 +6,7 @@ import {
   Phone, MapPin, MessageSquare, Calendar, Filter
 } from 'lucide-react';
 import { db } from '../firebase.js';
+import { useAuth } from '../contexts/AuthContext';
 import {
   collection, addDoc, updateDoc, deleteDoc, doc,
   getDocs, serverTimestamp, query, orderBy
@@ -67,6 +68,10 @@ function getInitials(name) {
 }
 
 export default function Appointments() {
+  const { getPermission } = useAuth();
+  const permission = getPermission('/appointments');
+  const canEdit = permission === 'edit';
+
   const [activeTab, setActiveTab] = useState('customer');
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -352,9 +357,11 @@ export default function Appointments() {
           <p className="page-subtitle">Schedule and manage all types of appointments</p>
         </div>
         <div className="page-header-actions">
-          <button className="btn btn-primary" onClick={openAddModal}>
-            <Plus size={16} /> Add Appointment
-          </button>
+          {canEdit && (
+            <button className="btn btn-primary" onClick={openAddModal}>
+              <Plus size={16} /> Add Appointment
+            </button>
+          )}
         </div>
       </div>
 
@@ -552,12 +559,16 @@ export default function Appointments() {
                           <button className="appt-action-btn view-btn" title="View" onClick={() => setViewItem(item)}>
                             <Eye size={15} />
                           </button>
-                          <button className="appt-action-btn edit-btn" title="Edit" onClick={() => openEditModal(item)}>
-                            <Pencil size={15} />
-                          </button>
-                          <button className="appt-action-btn delete-btn" title="Delete" onClick={() => setDeleteConfirm(item)}>
-                            <Trash2 size={15} />
-                          </button>
+                          {canEdit && (
+                            <button className="appt-action-btn edit-btn" title="Edit" onClick={() => openEditModal(item)}>
+                              <Pencil size={15} />
+                            </button>
+                          )}
+                          {canEdit && (
+                            <button className="appt-action-btn delete-btn" title="Delete" onClick={() => setDeleteConfirm(item)}>
+                              <Trash2 size={15} />
+                            </button>
+                          )}
                         </div>
                       </td>
                     </tr>

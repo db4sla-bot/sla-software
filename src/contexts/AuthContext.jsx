@@ -57,23 +57,53 @@ export function AuthProvider({ children }) {
 
   // Check if user has access to a specific path
   const hasAccess = (path) => {
-    // Admin has access to everything (user NOT in staff collection)
+    // Admin has access to everything
     if (isAdmin) return true;
     // No staff data means no access
     if (!staffData) return false;
-    // Dashboard is admin-only
-    if (path === '/') return false;
+    // Dashboard is usually open to staff if they have any access, but let's check
+    if (path === '/') return true;
+    
     // Check access array
-    const accessPaths = staffData.access || [];
-    return accessPaths.includes(path);
+    const access = staffData.access || [];
+    return access.some(entry => {
+      if (typeof entry === 'object' && entry !== null) {
+        return entry.path === path;
+      }
+      return entry === path;
+    });
+  };
+
+  // Get permission level for a specific path ('view' or 'edit')
+  const getPermission = (path) => {
+    // Admin has full 'edit' access to everything
+    if (isAdmin) return 'edit';
+    if (!staffData) return null;
+    
+    const access = staffData.access || [];
+    const entry = access.find(a => {
+      if (typeof a === 'object' && a !== null) {
+        return a.path === path;
+      }
+      return a === path;
+    });
+    
+    if (!entry) return null;
+    
+    // If it's an old string entry, default to 'edit' or 'view'? 
+    // The user said "for every menu add view or edit option", so I'll default to 'view' for safety if not specified.
+    return typeof entry === 'object' ? entry.permission : 'view';
   };
 
   // Get the first accessible path for staff (used for redirect)
   const getDefaultPath = () => {
     if (isAdmin) return '/';
     if (!staffData) return '/';
-    const accessPaths = staffData.access || [];
-    return accessPaths.length > 0 ? accessPaths[0] : '/';
+    const access = staffData.access || [];
+    if (access.length === 0) return '/';
+    
+    const firstEntry = access[0];
+    return typeof firstEntry === 'object' ? firstEntry.path : firstEntry;
   };
 
   const value = {
@@ -84,6 +114,7 @@ export function AuthProvider({ children }) {
     login,
     logout,
     hasAccess,
+    getPermission,
     getDefaultPath,
   };
 

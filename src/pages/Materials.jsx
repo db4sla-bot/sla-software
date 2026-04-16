@@ -24,6 +24,7 @@ import {
   query,
   orderBy,
 } from "firebase/firestore";
+import { useAuth } from "../contexts/AuthContext";
 import "../CSS/Materials.css";
 
 const TABS = [
@@ -61,6 +62,10 @@ const INITIAL_FORM = {
 };
 
 export default function Materials() {
+  const { getPermission } = useAuth();
+  const permission = getPermission('/materials');
+  const canEdit = permission === 'edit';
+
   const [activeTab, setActiveTab] = useState("invisible_grills");
   const [materials, setMaterials] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -211,9 +216,11 @@ export default function Materials() {
           </p>
         </div>
         <div className="page-header-actions">
-          <button className="btn btn-primary" onClick={openAddModal}>
-            <Plus size={16} /> Add Material
-          </button>
+          {canEdit && (
+            <button className="btn btn-primary" onClick={openAddModal}>
+              <Plus size={16} /> Add Material
+            </button>
+          )}
         </div>
       </div>
 
@@ -333,20 +340,24 @@ export default function Materials() {
                     </td>
                     <td>
                       <div className="mat-actions">
-                        <button
-                          className="mat-action-btn edit-btn"
-                          title="Edit"
-                          onClick={() => openEditModal(item)}
-                        >
-                          <Pencil size={15} />
-                        </button>
-                        <button
-                          className="mat-action-btn delete-btn"
-                          title="Delete"
-                          onClick={() => handleDelete(item.id)}
-                        >
-                          <Trash2 size={15} />
-                        </button>
+                        {canEdit && (
+                          <button
+                            className="mat-action-btn edit-btn"
+                            title="Edit"
+                            onClick={() => openEditModal(item)}
+                          >
+                            <Pencil size={15} />
+                          </button>
+                        )}
+                        {canEdit && (
+                          <button
+                            className="mat-action-btn delete-btn"
+                            title="Delete"
+                            onClick={() => handleDelete(item.id)}
+                          >
+                            <Trash2 size={15} />
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>

@@ -420,6 +420,52 @@
   color: #fff;
 }
 
+/* Permission Level Controls */
+.emp-access-item-wrap {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--content-bg);
+  transition: all 0.15s ease;
+}
+
+.emp-access-item-wrap.selected {
+  border-color: var(--primary);
+  background: rgba(108, 92, 231, 0.04);
+}
+
+.emp-permission-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+  padding-left: 26px;
+}
+
+.permission-radio {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.permission-radio input {
+  width: 13px;
+  height: 13px;
+  cursor: pointer;
+  accent-color: var(--primary);
+}
+
+.permission-radio.active {
+  color: var(--primary);
+  font-weight: 600;
+}
+
 /* === View Details === */
 .emp-view-header {
   display: flex;

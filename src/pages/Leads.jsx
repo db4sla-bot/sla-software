@@ -6,6 +6,7 @@ import {
   ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Calendar, UserPlus
 } from 'lucide-react';
 import { db } from '../firebase.js';
+import { useAuth } from '../contexts/AuthContext';
 import {
   collection, addDoc, updateDoc, deleteDoc, doc,
   getDocs, serverTimestamp, query, orderBy
@@ -116,6 +117,10 @@ function getStatusClass(status) {
    LEADS PAGE
    ============================= */
 export default function Leads() {
+  const { getPermission } = useAuth();
+  const permission = getPermission('/leads');
+  const canEdit = permission === 'edit';
+
   const [showModal, setShowModal] = useState(false);
   const [editingLead, setEditingLead] = useState(null);
   const [form, setForm] = useState({ ...INITIAL_FORM });
@@ -380,7 +385,7 @@ export default function Leads() {
         </div>
         <div className="page-header-actions">
           <button className="btn btn-outline"><Download size={16} /> Export</button>
-          <button className="btn btn-primary" onClick={openAddModal}><Plus size={16} /> Add Lead</button>
+          {canEdit && <button className="btn btn-primary" onClick={openAddModal}><Plus size={16} /> Add Lead</button>}
         </div>
       </div>
 
@@ -555,13 +560,15 @@ export default function Leads() {
                           </div>
                         ) : (
                           <>
-                            <button className="btn btn-outline" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '4px 10px', fontSize: '0.7rem', height: '30px' }} title="Convert to Customer" onClick={() => setConvertConfirm(lead)}>
-                              <UserPlus size={14} /> Convert
-                            </button>
-                            <button className="lead-action-btn edit-btn" title="Edit" onClick={() => openEditModal(lead)}><Pencil size={15} /></button>
+                            {canEdit && (
+                              <button className="btn btn-outline" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '4px 10px', fontSize: '0.7rem', height: '30px' }} title="Convert to Customer" onClick={() => setConvertConfirm(lead)}>
+                                <UserPlus size={14} /> Convert
+                              </button>
+                            )}
+                            {canEdit && <button className="lead-action-btn edit-btn" title="Edit" onClick={() => openEditModal(lead)}><Pencil size={15} /></button>}
                           </>
                         )}
-                        <button className="lead-action-btn delete-btn" title="Delete" onClick={() => setDeleteConfirm(lead)}><Trash2 size={15} /></button>
+                        {canEdit && <button className="lead-action-btn delete-btn" title="Delete" onClick={() => setDeleteConfirm(lead)}><Trash2 size={15} /></button>}
                       </div>
                     </td>
                   </tr>

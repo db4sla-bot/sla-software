@@ -5,6 +5,7 @@ import {
   ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Calendar
 } from 'lucide-react';
 import { db } from '../firebase.js';
+import { useAuth } from '../contexts/AuthContext';
 import {
   collection, addDoc, updateDoc, deleteDoc, doc,
   getDocs, serverTimestamp, query, orderBy
@@ -57,6 +58,10 @@ const INITIAL_FORM = {
 };
 
 export default function Expenses() {
+  const { getPermission } = useAuth();
+  const permission = getPermission('/expenses');
+  const canEdit = permission === 'edit';
+
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -243,7 +248,7 @@ export default function Expenses() {
         </div>
         <div className="page-header-actions">
           <button className="btn btn-outline"><Download size={16} /> Export</button>
-          <button className="btn btn-primary" onClick={openAddModal}><Plus size={16} /> Add Expense</button>
+          {canEdit && <button className="btn btn-primary" onClick={openAddModal}><Plus size={16} /> Add Expense</button>}
         </div>
       </div>
 
@@ -356,8 +361,8 @@ export default function Expenses() {
                     </td>
                     <td>
                       <div className="expense-actions">
-                        <button className="expense-action-btn edit-btn" title="Edit" onClick={() => openEditModal(exp)}><Pencil size={15} /></button>
-                        <button className="expense-action-btn delete-btn" title="Delete" onClick={() => setDeleteConfirm(exp)}><Trash2 size={15} /></button>
+                        {canEdit && <button className="expense-action-btn edit-btn" title="Edit" onClick={() => openEditModal(exp)}><Pencil size={15} /></button>}
+                        {canEdit && <button className="expense-action-btn delete-btn" title="Delete" onClick={() => setDeleteConfirm(exp)}><Trash2 size={15} /></button>}
                       </div>
                     </td>
                   </tr>

@@ -11,6 +11,7 @@ import {
   getDocs, serverTimestamp, query, orderBy
 } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { useAuth } from '../contexts/AuthContext';
 import '../CSS/Employees.css';
 
 const ROLE_OPTIONS = ['Admin', 'Manager', 'Staff', 'Technician', 'Sales Executive', 'Accountant'];
@@ -70,6 +71,10 @@ function generateEmployeeId() {
 
 export default function Employees() {
   const navigate = useNavigate();
+  const { getPermission, isAdmin: isAuthAdmin } = useAuth();
+  const employeePermission = getPermission('/employees');
+  const canEditEmployee = employeePermission === 'edit';
+
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -119,15 +124,30 @@ export default function Employees() {
   const toggleAccess = (path) => {
     setForm(prev => {
       const current = prev.access || [];
-      if (current.includes(path)) {
-        return { ...prev, access: current.filter(p => p !== path) };
+      const entry = current.find(a => (typeof a === 'object' ? a.path === path : a === path));
+      if (entry) {
+        return { ...prev, access: current.filter(a => (typeof a === 'object' ? a.path !== path : a !== path)) };
       }
-      return { ...prev, access: [...current, path] };
+      return { ...prev, access: [...current, { path, permission: 'view' }] };
+    });
+  };
+
+  const updatePermission = (path, permission) => {
+    setForm(prev => {
+      const current = prev.access || [];
+      return {
+        ...prev,
+        access: current.map(a => {
+          if (typeof a === 'object' && a.path === path) return { ...a, permission };
+          if (a === path) return { path: a, permission };
+          return a;
+        })
+      };
     });
   };
 
   const selectAllAccess = () => {
-    setForm(prev => ({ ...prev, access: ACCESS_MENU_ITEMS.map(i => i.path) }));
+    setForm(prev => ({ ...prev, access: ACCESS_MENU_ITEMS.map(i => ({ path: i.path, permission: 'edit' })) }));
   };
 
   const clearAllAccess = () => {
@@ -285,9 +305,11 @@ export default function Employees() {
           <p className="page-subtitle">Manage your team members and their roles</p>
         </div>
         <div className="page-header-actions">
-          <button className="btn btn-primary" onClick={openAddModal}>
-            <Plus size={16} /> Add Employee
-          </button>
+          {canEditEmployee && (
+            <button className="btn btn-primary" onClick={openAddModal}>
+              <Plus size={16} /> Add Employee
+            </button>
+          )}
         </div>
       </div>
 
@@ -411,12 +433,16 @@ export default function Employees() {
                         <button className="emp-action-btn view-btn" title="View" onClick={() => navigate(`/employee/${item.id}`)}>
                           <Eye size={15} />
                         </button>
-                        <button className="emp-action-btn edit-btn" title="Edit" onClick={() => openEditModal(item)}>
-                          <Pencil size={15} />
-                        </button>
-                        <button className="emp-action-btn delete-btn" title="Delete" onClick={() => setDeleteConfirm(item)}>
-                          <Trash2 size={15} />
-                        </button>
+                        {canEditEmployee && (
+                          <button className="emp-action-btn edit-btn" title="Edit" onClick={() => openEditModal(item)}>
+                            <Pencil size={15} />
+                          </button>
+                        )}
+                        {canEditEmployee && (
+                          <button className="emp-action-btn delete-btn" title="Delete" onClick={() => setDeleteConfirm(item)}>
+                            <Trash2 size={15} />
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>
@@ -533,20 +559,51 @@ export default function Employees() {
                   <button type="button" onClick={clearAllAccess}>Clear All</button>
                 </span>
               </div>
-              <div className="emp-access-grid">
-                {ACCESS_MENU_ITEMS.map(item => (
-                  <label key={item.path} className={`emp-access-item ${form.access.includes(item.path) ? 'selected' : ''}`}>
-                    <input
-                      type="checkbox"
-                      checked={form.access.includes(item.path)}
-                      onChange={() => toggleAccess(item.path)}
-                    />
-                    <span className="emp-access-checkbox">
-                      {form.access.includes(item.path) && <Check size={12} />}
-                    </span>
-                    {item.label}
-                  </label>
-                ))}
+              <div className="emp-access-grid" style={{ gridTemplateColumns: '1fr 1fr' }}>
+                {ACCESS_MENU_ITEMS.map(item => {
+                  const accessEntry = form.access.find(a => (typeof a === 'object' ? a.path === item.path : a === item.path));
+                  const isSelected = !!accessEntry;
+                  const permission = typeof accessEntry === 'object' ? accessEntry.permission : 'view';
+
+                  return (
+                    <div key={item.path} className={`emp-access-item-wrap ${isSelected ? 'selected' : ''}`}>
+                      <label className={`emp-access-item ${isSelected ? 'selected' : ''}`} style={{ border: 'none', background: 'transparent', padding: 0 }}>
+                        <input
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={() => toggleAccess(item.path)}
+                        />
+                        <span className="emp-access-checkbox">
+                          {isSelected && <Check size={12} />}
+                        </span>
+                        {item.label}
+                      </label>
+                      
+                      {isSelected && (
+                        <div className="emp-permission-toggle">
+                          <label className={`permission-radio ${permission === 'view' ? 'active' : ''}`}>
+                            <input 
+                              type="radio" 
+                              name={`perm-${item.path}`} 
+                              checked={permission === 'view'} 
+                              onChange={() => updatePermission(item.path, 'view')}
+                            />
+                            View
+                          </label>
+                          <label className={`permission-radio ${permission === 'edit' ? 'active' : ''}`}>
+                            <input 
+                              type="radio" 
+                              name={`perm-${item.path}`} 
+                              checked={permission === 'edit'} 
+                              onChange={() => updatePermission(item.path, 'edit')}
+                            />
+                            Edit
+                          </label>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
 
               {/* Additional Info */}
@@ -645,9 +702,16 @@ export default function Employees() {
                   <span className="emp-detail-label">Menu Access</span>
                   <div className="emp-access-tags">
                     {viewItem.access && viewItem.access.length > 0 ? (
-                      viewItem.access.map(p => {
-                        const item = ACCESS_MENU_ITEMS.find(a => a.path === p);
-                        return <span key={p} className="emp-access-tag">{item?.label || p}</span>;
+                      viewItem.access.map(a => {
+                        const path = typeof a === 'object' ? a.path : a;
+                        const perm = typeof a === 'object' ? a.permission : 'view';
+                        const item = ACCESS_MENU_ITEMS.find(mi => mi.path === path);
+                        return (
+                          <span key={path} className="emp-access-tag">
+                            {item?.label || path} 
+                            <span style={{ opacity: 0.6, marginLeft: 6, fontSize: '0.65rem' }}>({perm})</span>
+                          </span>
+                        );
                       })
                     ) : (
                       <span className="emp-detail-value">No access assigned</span>

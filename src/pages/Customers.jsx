@@ -7,6 +7,7 @@ import {
   ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight
 } from 'lucide-react';
 import { db } from '../firebase.js';
+import { useAuth } from '../contexts/AuthContext';
 import {
   collection, addDoc, updateDoc, deleteDoc, doc,
   getDocs, serverTimestamp, query, orderBy
@@ -26,6 +27,10 @@ const INITIAL_FORM = {
    ============================= */
 export default function Customers() {
   const navigate = useNavigate();
+  const { getPermission } = useAuth();
+  const permission = getPermission('/customers');
+  const canEdit = permission === 'edit';
+
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -190,9 +195,11 @@ export default function Customers() {
           <button className="btn btn-outline">
             <Download size={16} /> Export
           </button>
-          <button className="btn btn-primary" onClick={openAddModal}>
-            <Plus size={16} /> Add Customer
-          </button>
+          {canEdit && (
+            <button className="btn btn-primary" onClick={openAddModal}>
+              <Plus size={16} /> Add Customer
+            </button>
+          )}
         </div>
       </div>
 
@@ -299,20 +306,24 @@ export default function Customers() {
                         >
                           <Eye size={15} />
                         </button>
-                        <button
-                          className="customer-action-btn edit-btn"
-                          title="Edit"
-                          onClick={() => openEditModal(cust)}
-                        >
-                          <Pencil size={15} />
-                        </button>
-                        <button
-                          className="customer-action-btn delete-btn"
-                          title="Delete"
-                          onClick={() => setDeleteConfirm(cust)}
-                        >
-                          <Trash2 size={15} />
-                        </button>
+                        {canEdit && (
+                          <button
+                            className="customer-action-btn edit-btn"
+                            title="Edit"
+                            onClick={() => openEditModal(cust)}
+                          >
+                            <Pencil size={15} />
+                          </button>
+                        )}
+                        {canEdit && (
+                          <button
+                            className="customer-action-btn delete-btn"
+                            title="Delete"
+                            onClick={() => setDeleteConfirm(cust)}
+                          >
+                            <Trash2 size={15} />
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>
