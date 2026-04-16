@@ -422,19 +422,19 @@ export default function Leads() {
       {/* Stats */}
       <div className="leads-stats-bar">
         <div className="leads-stat-card">
-          <div className="leads-stat-icon" style={{ background: 'rgba(108,92,231,0.1)', color: '#6c5ce7' }}><Users size={22} /></div>
+          <div className="leads-stat-icon stat-total"><Users size={22} /></div>
           <div className="leads-stat-info"><h4>{statCounts.total}</h4><p>Total Leads</p></div>
         </div>
         <div className="leads-stat-card">
-          <div className="leads-stat-icon" style={{ background: 'rgba(0,184,148,0.1)', color: '#00b894' }}><TrendingUp size={22} /></div>
+          <div className="leads-stat-icon stat-positive"><TrendingUp size={22} /></div>
           <div className="leads-stat-info"><h4>{statCounts.positive}</h4><p>Positive Leads</p></div>
         </div>
         <div className="leads-stat-card">
-          <div className="leads-stat-icon" style={{ background: 'rgba(116,185,255,0.1)', color: '#2e86de' }}><UserCheck size={22} /></div>
+          <div className="leads-stat-icon stat-enquiry"><UserCheck size={22} /></div>
           <div className="leads-stat-info"><h4>{statCounts.enquiry}</h4><p>Enquiries</p></div>
         </div>
         <div className="leads-stat-card">
-          <div className="leads-stat-icon" style={{ background: 'rgba(225,112,85,0.1)', color: '#e17055' }}><UserX size={22} /></div>
+          <div className="leads-stat-icon stat-rejected"><UserX size={22} /></div>
           <div className="leads-stat-info"><h4>{statCounts.notInterested}</h4><p>Not Interested</p></div>
         </div>
       </div>
@@ -506,8 +506,8 @@ export default function Leads() {
           <table className="leads-table">
             <thead>
               <tr>
-                <th>#</th><th>Customer</th><th>Phone</th><th>Services</th>
-                <th>Source</th><th>Status</th><th>Follow Up</th><th>Actions</th>
+                <th>#</th><th>Customer</th><th>Phone</th><th className="hide-mobile">Services</th>
+                <th className="hide-mobile">Source</th><th>Status</th><th className="hide-xs">Follow Up</th><th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -532,12 +532,12 @@ export default function Leads() {
                     <td style={{ color: 'var(--text-muted)', fontWeight: 600 }}>{(currentPage - 1) * ITEMS_PER_PAGE + idx + 1}</td>
                     <td><span className="lead-name">{lead.customerName}</span></td>
                     <td><span className="lead-phone">{lead.phoneNumber}</span></td>
-                    <td>
+                    <td className="hide-mobile">
                       <div className="lead-services">
                         {lead.services?.map((s) => <span key={s} className="lead-service-tag">{s}</span>)}
                       </div>
                     </td>
-                    <td style={{ fontSize: '0.82rem' }}>
+                    <td className="hide-mobile" style={{ fontSize: '0.82rem' }}>
                       {lead.source}
                       {lead.subSource && <span style={{ display: 'block', fontSize: '0.72rem', color: 'var(--text-muted)' }}>{lead.subSource}</span>}
                     </td>
@@ -545,7 +545,7 @@ export default function Leads() {
                       <span className={`status-badge ${getStatusClass(lead.status)}`}>{lead.status || '—'}</span>
                       {lead.subStatus && <span style={{ display: 'block', fontSize: '0.72rem', color: 'var(--text-secondary)', marginTop: '3px' }}>{lead.subStatus}</span>}
                     </td>
-                    <td style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                    <td className="hide-xs" style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
                       {lead.followUpDate ? (
                         <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                           <CalendarClock size={13} />{lead.followUpDate}{lead.followUpTime && ` ${lead.followUpTime}`}
@@ -562,7 +562,7 @@ export default function Leads() {
                           <>
                             {canEdit && (
                               <button className="btn btn-outline" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '4px 10px', fontSize: '0.7rem', height: '30px' }} title="Convert to Customer" onClick={() => setConvertConfirm(lead)}>
-                                <UserPlus size={14} /> Convert
+                                <UserPlus size={14} /> <span className="hide-mobile">Convert</span>
                               </button>
                             )}
                             {canEdit && <button className="lead-action-btn edit-btn" title="Edit" onClick={() => openEditModal(lead)}><Pencil size={15} /></button>}

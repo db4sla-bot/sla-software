@@ -265,7 +265,7 @@ export default function Expenses() {
       {/* Stats */}
       <div className="expenses-stats-bar">
         <div className="expenses-stat-card">
-          <div className="expenses-stat-icon" style={{ background: 'rgba(225,112,85,0.1)', color: '#e17055' }}>
+          <div className="expenses-stat-icon stat-total">
             <Receipt size={22} />
           </div>
           <div className="expenses-stat-info">
@@ -274,7 +274,7 @@ export default function Expenses() {
           </div>
         </div>
         <div className="expenses-stat-card">
-          <div className="expenses-stat-icon" style={{ background: 'rgba(108,92,231,0.1)', color: '#6c5ce7' }}>
+          <div className="expenses-stat-icon stat-amount">
             <Receipt size={22} />
           </div>
           <div className="expenses-stat-info">
@@ -310,10 +310,10 @@ export default function Expenses() {
           <table className="expenses-table">
             <thead>
               <tr>
-                <th>#</th>
+                <th className="hide-xs">#</th>
                 <th>Expense Name</th>
-                <th>Category</th>
-                <th>Sub Category</th>
+                <th className="hide-mobile">Category</th>
+                <th className="hide-xs">Sub Category</th>
                 <th>Amount</th>
                 <th>Date</th>
                 <th>Actions</th>
@@ -342,12 +342,12 @@ export default function Expenses() {
               ) : (
                 paginated.map((exp, idx) => (
                   <tr key={exp.id}>
-                    <td style={{ color: 'var(--text-muted)', fontWeight: 600 }}>{(currentPage - 1) * ITEMS_PER_PAGE + idx + 1}</td>
+                    <td className="hide-xs" style={{ color: 'var(--text-muted)', fontWeight: 600 }}>{(currentPage - 1) * ITEMS_PER_PAGE + idx + 1}</td>
                     <td style={{ fontWeight: 600 }}>{exp.expenseName}</td>
-                    <td>
+                    <td className="hide-mobile">
                       <span className={`expense-category-tag ${getCategoryClass(exp.category)}`}>{exp.category}</span>
                     </td>
-                    <td>
+                    <td className="hide-xs">
                       {exp.subCategory && <span className="expense-sub-tag">{exp.subCategory}</span>}
                       {exp.transportMode && <span className="expense-sub-tag" style={{ marginLeft: 4 }}>{exp.transportMode}</span>}
                       {exp.transportItem && <span className="expense-sub-tag" style={{ marginLeft: 4 }}>{exp.transportItem}</span>}

@@ -394,7 +394,7 @@ export default function Appointments() {
           </div>
         </div>
         <div className="appt-stat-card">
-          <div className="appt-stat-icon" style={{ background: 'rgba(253, 203, 110, 0.12)', color: '#e67e22' }}>
+          <div className="appt-stat-icon stat-pending">
             <Clock size={22} />
           </div>
           <div className="appt-stat-info">
@@ -403,7 +403,7 @@ export default function Appointments() {
           </div>
         </div>
         <div className="appt-stat-card">
-          <div className="appt-stat-icon" style={{ background: 'rgba(0, 184, 148, 0.12)', color: '#00b894' }}>
+          <div className="appt-stat-icon stat-completed">
             <Check size={22} />
           </div>
           <div className="appt-stat-info">
@@ -412,7 +412,7 @@ export default function Appointments() {
           </div>
         </div>
         <div className="appt-stat-card">
-          <div className="appt-stat-icon" style={{ background: 'rgba(116, 185, 255, 0.12)', color: '#0984e3' }}>
+          <div className="appt-stat-icon stat-showing">
             <Search size={22} />
           </div>
           <div className="appt-stat-info">
@@ -478,12 +478,12 @@ export default function Appointments() {
           <table className="appt-table">
             <thead>
               <tr>
-                <th>#</th>
+                <th className="hide-xs">#</th>
                 <th>{activeTab === 'customer' ? 'Customer' : activeTab === 'business' ? 'Business Partner' : 'Meeting With'}</th>
-                {activeTab !== 'internal' && <th>Address</th>}
+                {activeTab !== 'internal' && <th className="hide-mobile">Address</th>}
                 <th>Date & Time</th>
-                <th>Reason</th>
-                <th>Result / Comments</th>
+                <th className="hide-mobile">Reason</th>
+                <th className="hide-xs">Result / Comments</th>
                 <th>Status</th>
                 <th>Actions</th>
               </tr>
@@ -516,7 +516,7 @@ export default function Appointments() {
 
                   return (
                     <tr key={item.id}>
-                      <td style={{ color: 'var(--text-muted)', fontWeight: 600 }}>{serialNum}</td>
+                      <td className="hide-xs" style={{ color: 'var(--text-muted)', fontWeight: 600 }}>{serialNum}</td>
                       <td>
                         <div className="appt-name-cell">
                           <div className="appt-name-avatar" style={{ background: getAvatarColor(name) }}>
@@ -529,7 +529,7 @@ export default function Appointments() {
                         </div>
                       </td>
                       {activeTab !== 'internal' && (
-                        <td>
+                        <td className="hide-mobile">
                           {item.address ? (
                             <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: 4 }}>
                               <MapPin size={13} />{item.address}
@@ -543,10 +543,10 @@ export default function Appointments() {
                           <span className="appt-time"><Clock size={11} /> {formatDisplayTime(item.time)}</span>
                         </div>
                       </td>
-                      <td>
+                      <td className="hide-mobile">
                         <span className="appt-reason" title={item.reason}>{item.reason || '—'}</span>
                       </td>
-                      <td>
+                      <td className="hide-xs">
                         <span className="appt-result" title={item.resultComments}>{item.resultComments || '—'}</span>
                       </td>
                       <td>

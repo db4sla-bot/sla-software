@@ -34,6 +34,9 @@
   flex-shrink: 0;
 }
 
+.qr-stat-icon.stat-total { background: rgba(108, 92, 231, 0.1); color: #6c5ce7; }
+.qr-stat-icon.stat-filtered { background: rgba(0, 184, 148, 0.1); color: #00b894; }
+
 .qr-stat-info h4 {
   font-size: 1.35rem;
   font-weight: 800;

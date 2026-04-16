@@ -223,7 +223,7 @@ export default function Invoices() {
         {/* Stats */}
         <div className="invoices-stats-bar">
           <div className="invoices-stat-card">
-            <div className="invoices-stat-icon" style={{ background: 'rgba(108,92,231,0.1)', color: '#6c5ce7' }}>
+            <div className="invoices-stat-icon stat-total">
               <FileText size={22} />
             </div>
             <div className="invoices-stat-info">
@@ -232,7 +232,7 @@ export default function Invoices() {
             </div>
           </div>
           <div className="invoices-stat-card">
-            <div className="invoices-stat-icon" style={{ background: 'rgba(0,184,148,0.1)', color: '#00b894' }}>
+            <div className="invoices-stat-icon stat-amount">
               <FileText size={22} />
             </div>
             <div className="invoices-stat-info">

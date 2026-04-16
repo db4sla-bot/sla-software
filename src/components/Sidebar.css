@@ -188,11 +188,16 @@
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
   .sidebar {
-    transform: translateX(-100%);
+    transform: translateX(-120%);
+    box-shadow: none;
+    visibility: hidden;
+    transition: transform var(--transition-normal), visibility var(--transition-normal);
   }
 
   .sidebar.open {
     transform: translateX(0);
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.2);
+    visibility: visible;
   }
 
   .sidebar-overlay.visible {

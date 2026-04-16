@@ -36,6 +36,11 @@
   flex-shrink: 0;
 }
 
+.leads-stat-icon.stat-total { background: rgba(108, 92, 231, 0.1); color: #6c5ce7; }
+.leads-stat-icon.stat-positive { background: rgba(0, 184, 148, 0.1); color: #00b894; }
+.leads-stat-icon.stat-enquiry { background: rgba(116, 185, 255, 0.1); color: #2e86de; }
+.leads-stat-icon.stat-rejected { background: rgba(225, 112, 85, 0.1); color: #e17055; }
+
 .leads-stat-info h4 {
   font-size: 1.35rem;
   font-weight: 800;

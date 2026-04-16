@@ -7,6 +7,7 @@ import {
   ArrowUpRight,
   ArrowDownRight,
 } from 'lucide-react';
+import '../CSS/Dashboard.css';
 
 const stats = [
   {
@@ -53,104 +54,49 @@ export default function Dashboard() {
       <div className="page-header">
         <div className="page-header-left">
           <h1 className="page-title">Dashboard</h1>
-          <p className="page-subtitle">Welcome back! Here&apos;s your business overview.</p>
+          <p className="page-subtitle">Welcome back! Here's your business overview.</p>
         </div>
       </div>
 
       {/* Stats Grid */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-        gap: '20px',
-        marginBottom: '24px',
-      }}>
+      <div className="dashboard-stats-grid">
         {stats.map((stat) => {
           const Icon = stat.icon;
           return (
-            <div key={stat.title} style={{
-              background: 'var(--card-bg)',
-              borderRadius: 'var(--card-radius)',
-              padding: '22px',
-              boxShadow: 'var(--card-shadow)',
-              border: '1px solid var(--border-color)',
-              display: 'flex',
-              alignItems: 'flex-start',
-              justifyContent: 'space-between',
-              transition: 'all 0.2s ease',
-              cursor: 'pointer',
-            }}>
-              <div>
-                <p style={{
-                  fontSize: '0.8rem',
-                  color: 'var(--text-secondary)',
-                  fontWeight: 500,
-                  marginBottom: '8px',
-                }}>{stat.title}</p>
-                <h3 style={{
-                  fontSize: '1.6rem',
-                  fontWeight: 800,
-                  color: 'var(--text-primary)',
-                  letterSpacing: '-0.02em',
-                  marginBottom: '6px',
-                }}>{stat.value}</h3>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '4px',
-                  fontSize: '0.75rem',
-                  fontWeight: 600,
-                  color: stat.isUp ? 'var(--success)' : 'var(--danger)',
-                }}>
-                  {stat.isUp ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
+            <div key={stat.title} className="dashboard-stat-card">
+              <div className="dashboard-stat-info">
+                <p>{stat.title}</p>
+                <h2>{stat.value}</h2>
+                <div className={`dashboard-stat-trend ${stat.isUp ? 'up' : 'down'}`}>
+                  {stat.isUp ? <ArrowUpRight size={13} /> : <ArrowDownRight size={13} />}
                   {stat.change}
-                  <span style={{ color: 'var(--text-muted)', fontWeight: 400, marginLeft: '4px' }}>vs last month</span>
                 </div>
               </div>
-              <div style={{
-                width: '48px',
-                height: '48px',
-                borderRadius: '12px',
-                background: stat.bgColor,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: stat.color,
-                flexShrink: 0,
-              }}>
-                <Icon size={24} />
+              <div className="dashboard-stat-icon" style={{ background: stat.bgColor, color: stat.color }}>
+                <Icon size={20} />
               </div>
             </div>
           );
         })}
       </div>
 
-      {/* Placeholder cards */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))',
-        gap: '20px',
-      }}>
-        <div style={{
-          background: 'var(--card-bg)',
-          borderRadius: 'var(--card-radius)',
-          padding: '24px',
-          boxShadow: 'var(--card-shadow)',
-          border: '1px solid var(--border-color)',
-          minHeight: '300px',
-        }}>
-          <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '4px' }}>Revenue Overview</h3>
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Monthly revenue trend will appear here</p>
+      {/* Main Content Grid */}
+      <div className="dashboard-main-grid">
+        <div className="dashboard-main-card">
+          <h3>Revenue Overview</h3>
+          <p>Monthly revenue trend will appear here</p>
+          <div style={{ padding: '40px', textAlign: 'center', opacity: 0.2, marginTop: '40px' }}>
+            <TrendingUp size={48} style={{ marginBottom: '16px' }} />
+            <p>Chart data will appear here</p>
+          </div>
         </div>
-        <div style={{
-          background: 'var(--card-bg)',
-          borderRadius: 'var(--card-radius)',
-          padding: '24px',
-          boxShadow: 'var(--card-shadow)',
-          border: '1px solid var(--border-color)',
-          minHeight: '300px',
-        }}>
-          <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '4px' }}>Recent Leads</h3>
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Latest lead activities will appear here</p>
+        <div className="dashboard-main-card">
+          <h3>Recent Leads</h3>
+          <p>Latest lead activities will appear here</p>
+          <div style={{ padding: '40px', textAlign: 'center', opacity: 0.2, marginTop: '40px' }}>
+            <Users size={48} style={{ marginBottom: '16px' }} />
+            <p>Lead data will appear here</p>
+          </div>
         </div>
       </div>
     </div>

@@ -345,7 +345,7 @@ export default function Quotations() {
         {/* Stats */}
         <div className="quotations-stats-bar">
           <div className="quotations-stat-card">
-            <div className="quotations-stat-icon" style={{ background: 'rgba(108,92,231,0.1)', color: '#6c5ce7' }}>
+            <div className="quotations-stat-icon stat-total">
               <FileText size={22} />
             </div>
             <div className="quotations-stat-info">
@@ -354,7 +354,7 @@ export default function Quotations() {
             </div>
           </div>
           <div className="quotations-stat-card">
-            <div className="quotations-stat-icon" style={{ background: 'rgba(0,184,148,0.1)', color: '#00b894' }}>
+            <div className="quotations-stat-icon stat-amount">
               <FileText size={22} />
             </div>
             <div className="quotations-stat-info">

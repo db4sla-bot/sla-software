@@ -206,7 +206,7 @@ export default function Customers() {
       {/* Stats */}
       <div className="customers-stats-bar">
         <div className="customers-stat-card">
-          <div className="customers-stat-icon" style={{ background: 'rgba(108,92,231,0.1)', color: '#6c5ce7' }}>
+          <div className="customers-stat-icon stat-total">
             <Users size={22} />
           </div>
           <div className="customers-stat-info">
@@ -215,7 +215,7 @@ export default function Customers() {
           </div>
         </div>
         <div className="customers-stat-card">
-          <div className="customers-stat-icon" style={{ background: 'rgba(0,184,148,0.1)', color: '#00b894' }}>
+          <div className="customers-stat-icon stat-filtered">
             <User size={22} />
           </div>
           <div className="customers-stat-info">
@@ -244,11 +244,11 @@ export default function Customers() {
           <table className="customers-table">
             <thead>
               <tr>
-                <th>#</th>
+                <th className="hide-xs">#</th>
                 <th>Customer Name</th>
                 <th>Mobile Number</th>
-                <th>Address</th>
-                <th>Added On</th>
+                <th className="hide-mobile">Address</th>
+                <th className="hide-xs">Added On</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -275,7 +275,7 @@ export default function Customers() {
               ) : (
                 paginatedCustomers.map((cust, idx) => (
                   <tr key={cust.id}>
-                    <td style={{ color: 'var(--text-muted)', fontWeight: 600 }}>
+                    <td className="hide-xs" style={{ color: 'var(--text-muted)', fontWeight: 600 }}>
                       {(currentPage - 1) * ITEMS_PER_PAGE + idx + 1}
                     </td>
                     <td>
@@ -286,12 +286,12 @@ export default function Customers() {
                         <Phone size={13} /> {cust.mobileNumber}
                       </span>
                     </td>
-                    <td>
+                    <td className="hide-mobile">
                       <span className="customer-address" title={cust.address}>
                         {cust.address || '—'}
                       </span>
                     </td>
-                    <td>
+                    <td className="hide-xs">
                       <span className="customer-date">
                         <CalendarClock size={13} />
                         {formatDate(cust.createdAt)}

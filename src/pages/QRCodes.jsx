@@ -154,11 +154,11 @@ export default function QRCodes() {
       {/* Stats */}
       <div className="qr-stats-bar">
         <div className="qr-stat-card">
-          <div className="qr-stat-icon" style={{ background: 'rgba(108,92,231,0.1)', color: '#6c5ce7' }}><QrCode size={22} /></div>
+          <div className="qr-stat-icon stat-total"><QrCode size={22} /></div>
           <div className="qr-stat-info"><h4>{qrCodes.length}</h4><p>Total QR Codes</p></div>
         </div>
         <div className="qr-stat-card">
-          <div className="qr-stat-icon" style={{ background: 'rgba(0,184,148,0.1)', color: '#00b894' }}><QrCode size={22} /></div>
+          <div className="qr-stat-icon stat-filtered"><QrCode size={22} /></div>
           <div className="qr-stat-info"><h4>{filtered.length}</h4><p>Showing Results</p></div>
         </div>
       </div>

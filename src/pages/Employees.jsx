@@ -316,7 +316,7 @@ export default function Employees() {
       {/* Stats */}
       <div className="emp-stats-bar">
         <div className="emp-stat-card">
-          <div className="emp-stat-icon" style={{ background: 'rgba(108, 92, 231, 0.1)', color: '#6c5ce7' }}>
+          <div className="emp-stat-icon stat-total">
             <BadgeCheck size={22} />
           </div>
           <div className="emp-stat-info">
@@ -325,7 +325,7 @@ export default function Employees() {
           </div>
         </div>
         <div className="emp-stat-card">
-          <div className="emp-stat-icon" style={{ background: 'rgba(0, 184, 148, 0.1)', color: '#00b894' }}>
+          <div className="emp-stat-icon stat-admin">
             <Shield size={22} />
           </div>
           <div className="emp-stat-info">
@@ -334,7 +334,7 @@ export default function Employees() {
           </div>
         </div>
         <div className="emp-stat-card">
-          <div className="emp-stat-icon" style={{ background: 'rgba(116, 185, 255, 0.12)', color: '#0984e3' }}>
+          <div className="emp-stat-icon stat-showing">
             <User size={22} />
           </div>
           <div className="emp-stat-info">

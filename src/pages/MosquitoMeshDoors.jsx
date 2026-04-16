@@ -668,7 +668,7 @@ export default function MosquitoMeshDoors() {
               </button>
             </div>
 
-            <div className="modal-body-table">
+            <div className="modal-body-table table-wrap">
               <div className="table-wrapper">
                 <div className="table-left">
                   {/* Left side - Static menu rows */}

@@ -161,7 +161,7 @@ export default function Passwords() {
       {/* Stats */}
       <div className="passwords-stats-bar">
         <div className="passwords-stat-card">
-          <div className="passwords-stat-icon" style={{ background: 'rgba(108,92,231,0.1)', color: '#6c5ce7' }}>
+          <div className="passwords-stat-icon stat-total">
             <KeyRound size={22} />
           </div>
           <div className="passwords-stat-info">
@@ -170,7 +170,7 @@ export default function Passwords() {
           </div>
         </div>
         <div className="passwords-stat-card">
-          <div className="passwords-stat-icon" style={{ background: 'rgba(0,184,148,0.1)', color: '#00b894' }}>
+          <div className="passwords-stat-icon stat-showing">
             <KeyRound size={22} />
           </div>
           <div className="passwords-stat-info">

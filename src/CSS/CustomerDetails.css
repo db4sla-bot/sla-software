@@ -618,6 +618,15 @@
     gap: 4px;
   }
 
+  .cd-payment-body {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .cd-installment-row {
+    min-width: 600px; /* Force scroll for fields */
+  }
+
   .cd-installment-row.header { display: none; }
 
   .cd-payment-summary {

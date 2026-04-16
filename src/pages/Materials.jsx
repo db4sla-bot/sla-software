@@ -263,11 +263,11 @@ export default function Materials() {
           <table className="mat-table">
             <thead>
               <tr>
-                <th>#</th>
+                <th className="hide-xs">#</th>
                 <th>Material Name</th>
-                <th>Material ID (Short Code)</th>
-                <th>Old Inventory</th>
-                <th>New Inventory</th>
+                <th className="hide-mobile">Material ID (Short Code)</th>
+                <th className="hide-mobile">Old Inventory</th>
+                <th className="hide-mobile">New Inventory</th>
                 <th>Total Inventory</th>
                 <th>Actions</th>
               </tr>
@@ -307,6 +307,7 @@ export default function Materials() {
                 filteredMaterials.map((item, idx) => (
                   <tr key={item.id}>
                     <td
+                      className="hide-xs"
                       style={{ color: "var(--text-muted)", fontWeight: 600 }}
                     >
                       {idx + 1}
@@ -319,7 +320,7 @@ export default function Materials() {
                     >
                       {item.materialName || "—"}
                     </td>
-                    <td>
+                    <td className="hide-mobile">
                       <span
                         style={{
                           background: "var(--content-bg)",
@@ -332,8 +333,8 @@ export default function Materials() {
                         {item.materialId || "—"}
                       </span>
                     </td>
-                    <td>{item.inventoryOld || 0}</td>
-                    <td>{item.newInventoryCount || 0}</td>
+                    <td className="hide-mobile">{item.inventoryOld || 0}</td>
+                    <td className="hide-mobile">{item.newInventoryCount || 0}</td>
                     <td style={{ fontWeight: "bold" }}>
                       {(item.inventoryOld || 0) +
                         (item.newInventoryCount || 0)}
